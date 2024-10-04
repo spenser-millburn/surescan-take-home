@@ -1,0 +1,1 @@
+[{"./main.py": "Modify the script to use Typer options instead of positional arguments. This involves changing the function definitions to use Typer's option decorator or syntax, allowing command-line options to be specified with flags instead of relying on positional order."}]
