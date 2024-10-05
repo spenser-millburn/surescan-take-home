@@ -16,6 +16,36 @@ void eigen2cv(const Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic,
     dst = cv::Mat(src.rows(), src.cols(), CV_8UC1, const_cast<unsigned char*>(src.data()));
 }
 
+// Flip image along x-axis
+Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> flip_x(const Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>& image) {
+    return image.rowwise().reverse();
+}
+
+// Flip image along y-axis
+Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> flip_y(const Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>& image) {
+    return image.colwise().reverse();
+}
+
+// Rotate image 90 degrees to the left
+Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> rotate_left(const Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>& image) {
+    return image.transpose().colwise().reverse();
+}
+
+// Rotate image 90 degrees to the right
+Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> rotate_right(const Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>& image) {
+    return image.transpose().rowwise().reverse();
+}
+
+// Convert image to grayscale (assuming input is already grayscale)
+Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> grayscale(const Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>& image) {
+    return image;
+}
+
+// Return the Eigen matrix of the image
+Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> eigen_matrix(const Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>& image) {
+    return image;
+}
+
 // Function to load, process, and save the image
 int flipped_grayscale(const std::string &image_path, const std::string &output_path) {
     // Load the image
@@ -30,7 +60,7 @@ int flipped_grayscale(const std::string &image_path, const std::string &output_p
     cv2eigen(image, eigenImage);
 
     // Transform the image (flip it)
-    Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> flippedImage = eigenImage.colwise().reverse();
+    Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> flippedImage = flip_y(eigenImage);
 
     // Convert back to OpenCV Mat
     cv::Mat flippedMat;
@@ -52,8 +82,8 @@ PYBIND11_MODULE(_core, m) {
 
         .. autosummary::
            :toctree: _generate
-            flipped_grayscale 
-
+           
+           flipped_grayscale
     )pbdoc";
     m.attr("__version__") = "dev";
 }
