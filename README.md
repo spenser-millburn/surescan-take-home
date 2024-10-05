@@ -1,7 +1,7 @@
 # SureScan Takehome Project - Spenser Millburn
 
 ## Overview
-This project is a takehome assignment for SureScan. The purpose of the contained application is to apply image processing/transformations.
+This project is a takehome assignment for SureScan. The purpose of the app is to apply image processing/transformations.
 
 ## Usage
 - **GUI**: Once the Docker services are up, you can interact with the Qt GUI to browse and display images.
@@ -30,7 +30,7 @@ This project is a takehome assignment for SureScan. The purpose of the contained
 
 2. **Python Typer Application**: A command-line interface built with Typer that automates image processing tasks. It uses a C++ backend for performing image transformations such as flipping and converting images to grayscale.
 
-3. **C++ Backend**: Utilizes OpenCV and Eigen3 libraries to perform image transformations. The backend is exposed to Python via Pybind11, allowing seamless integration with the Python.
+3. **C++ Backend**: Utilizes OpenCV and Eigen3 libraries to perform image transformations. The backend is exposed to Python via Pybind11. 
 
 ## Getting Started
 To run the project, ensure you have Docker and Docker Compose installed on your system. Follow these steps:
@@ -38,20 +38,21 @@ To run the project, ensure you have Docker and Docker Compose installed on your 
 1. Clone the repository to your local machine.
 2. Navigate to the project directory.
 3. Run the following command to transform the demo images, the output will appear in ./output:
-  - Bonus: I have included a few other types of transformations, see the --help option of the cli for details. 
+  - ***Bonus:*** I have included a few other types of transformations, see the --help option of the cli for details. 
 
 ```
 docker-compose run --rm python_cli_wrapper python3 python_cli_wrapper/main.py --input-dir python_cli_wrapper/images/ --transformation-type flipped_grayscale --output-dir ./python_cli_wrapper/output
 ```
+The transformed images appear in the output directory.
+
 4. Start the QT GUI 
-  - NOTE: make sure you have X_FORWARDING set up. 
+  - NOTE: make sure you have X_FORWARDING set up.
 ```
 docker-compose up --build qt_gui
 ```
+  - follow the on screen prompts. 
 
-The transformed images appear in the output directory. Alertnatively
+## Thank You
+- built with love by spenser millburn
 
 
-
-## Conclusion
-This project demonstrates the integration of a Qt-based GUI with a Python CLI application that uses a C++ backend for image processing
