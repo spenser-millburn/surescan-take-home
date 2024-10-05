@@ -23,8 +23,8 @@ This project is a takehome assignment for SureScan. The purpose of the contained
 │    --show-completion                  Show completion for the current shell, to copy it or customize the installation.                                            │
 │    --help                             Show this message and exit.                                                                                                 │
 ╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
-```
  
+``
 
 ## Components
 1. **Qt GUI Application**: A desktop application built using Qt that allows users to browse and display images. It is designed to be simple and intuitive, providing basic image viewing capabilities.
