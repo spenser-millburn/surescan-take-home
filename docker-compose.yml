@@ -1,26 +1,14 @@
 version: '3.8'
 
 services:
-  # qt_gui:
-    # build:
-      # context: ./qt_gui
-      # dockerfile: Dockerfile
-    # image: qt_gui_image
-    # container_name: qt_gui_container
-    # volumes:
-      # - ./qt_gui:/app
-    # command: cmake . && make && ./MyImageBrowser
-    # networks:
-      # - app_network
-    # depends_on:
-      # - cpp_image_transformers
-#
-  cpp_image_transformers:
+
+  python_cli_wrapper:
     build:
       context: .
       dockerfile: Dockerfile
-    # image: cpp_image_transformers_image
-    # container_name: cpp_image_transformers_container
     volumes:
       - ./output:/app/python_cli_wrapper/output
+    working_dir: /app
+    command: ["python3", "python_cli_wrapper/main.py", "--input-dir", "python_cli_wrapper/images/", "--transformation-type", "flipped_grayscale", "--output-dir", "./python_cli_wrapper/output"]
+
 
