@@ -1,4 +1,5 @@
 #include <pybind11/pybind11.h>
+#include <pybind11/numpy.h>
 #include <opencv2/opencv.hpp>
 #include <Eigen/Dense>
 #include <iostream>
@@ -17,51 +18,55 @@ void eigen2cv(const Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic,
 }
 
 // Flip image along x-axis
-Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> flip_x(const std::string &image_path, const std::string &output_path) {
+pybind11::array_t<unsigned char> flip_x(const std::string &image_path, const std::string &output_path) {
     cv::Mat image = cv::imread(image_path, cv::IMREAD_GRAYSCALE);
     Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> eigenImage;
     cv2eigen(image, eigenImage);
-    return eigenImage.rowwise().reverse();
+    Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> flippedImage = eigenImage.rowwise().reverse();
+    return pybind11::array_t<unsigned char>({flippedImage.rows(), flippedImage.cols()}, flippedImage.data());
 }
 
 // Flip image along y-axis
-Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> flip_y(const std::string &image_path, const std::string &output_path) {
+pybind11::array_t<unsigned char> flip_y(const std::string &image_path, const std::string &output_path) {
     cv::Mat image = cv::imread(image_path, cv::IMREAD_GRAYSCALE);
     Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> eigenImage;
     cv2eigen(image, eigenImage);
-    return eigenImage.colwise().reverse();
+    Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> flippedImage = eigenImage.colwise().reverse();
+    return pybind11::array_t<unsigned char>({flippedImage.rows(), flippedImage.cols()}, flippedImage.data());
 }
 
 // Rotate image 90 degrees to the left
-Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> rotate_left(const std::string &image_path, const std::string &output_path) {
+pybind11::array_t<unsigned char> rotate_left(const std::string &image_path, const std::string &output_path) {
     cv::Mat image = cv::imread(image_path, cv::IMREAD_GRAYSCALE);
     Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> eigenImage;
     cv2eigen(image, eigenImage);
-    return eigenImage.transpose().colwise().reverse();
+    Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> rotatedImage = eigenImage.transpose().colwise().reverse();
+    return pybind11::array_t<unsigned char>({rotatedImage.rows(), rotatedImage.cols()}, rotatedImage.data());
 }
 
 // Rotate image 90 degrees to the right
-Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> rotate_right(const std::string &image_path, const std::string &output_path) {
+pybind11::array_t<unsigned char> rotate_right(const std::string &image_path, const std::string &output_path) {
     cv::Mat image = cv::imread(image_path, cv::IMREAD_GRAYSCALE);
     Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> eigenImage;
     cv2eigen(image, eigenImage);
-    return eigenImage.transpose().rowwise().reverse();
+    Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> rotatedImage = eigenImage.transpose().rowwise().reverse();
+    return pybind11::array_t<unsigned char>({rotatedImage.rows(), rotatedImage.cols()}, rotatedImage.data());
 }
 
 // Convert image to grayscale (assuming input is already grayscale)
-Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> grayscale(const std::string &image_path, const std::string &output_path) {
+pybind11::array_t<unsigned char> grayscale(const std::string &image_path, const std::string &output_path) {
     cv::Mat image = cv::imread(image_path, cv::IMREAD_GRAYSCALE);
     Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> eigenImage;
     cv2eigen(image, eigenImage);
-    return eigenImage;
+    return pybind11::array_t<unsigned char>({eigenImage.rows(), eigenImage.cols()}, eigenImage.data());
 }
 
 // Return the Eigen matrix of the image
-Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> eigen_matrix(const std::string &image_path, const std::string &output_path) {
+pybind11::array_t<unsigned char> eigen_matrix(const std::string &image_path, const std::string &output_path) {
     cv::Mat image = cv::imread(image_path, cv::IMREAD_GRAYSCALE);
     Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> eigenImage;
     cv2eigen(image, eigenImage);
-    return eigenImage;
+    return pybind11::array_t<unsigned char>({eigenImage.rows(), eigenImage.cols()}, eigenImage.data());
 }
 
 // Function to load, process, and save the image
@@ -78,7 +83,7 @@ int flipped_grayscale(const std::string &image_path, const std::string &output_p
     cv2eigen(image, eigenImage);
 
     // Transform the image (flip it)
-    Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> flippedImage = flip_y(image_path, output_path);
+    Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> flippedImage = eigenImage.colwise().reverse();
 
     // Convert back to OpenCV Mat
     cv::Mat flippedMat;
@@ -90,8 +95,15 @@ int flipped_grayscale(const std::string &image_path, const std::string &output_p
     return 0; // Success
 }
 
+
 PYBIND11_MODULE(_core, m) {
     m.def("flipped_grayscale", &flipped_grayscale, "A function that transforms (flips) an image and saves it to the output path.");
+    m.def("flip_x", &flip_x, "Flip image along x-axis.");
+    m.def("flip_y", &flip_y, "Flip image along y-axis.");
+    m.def("rotate_left", &rotate_left, "Rotate image 90 degrees to the left.");
+    m.def("rotate_right", &rotate_right, "Rotate image 90 degrees to the right.");
+    m.def("grayscale", &grayscale, "Convert image to grayscale.");
+    m.def("eigen_matrix", &eigen_matrix, "Return the Eigen matrix of the image.");
     m.doc() = R"pbdoc(
         Pybind11 example plugin
         -----------------------
@@ -102,6 +114,12 @@ PYBIND11_MODULE(_core, m) {
            :toctree: _generate
 
            flipped_grayscale
+           flip_x
+           flip_y
+           rotate_left
+           rotate_right
+           grayscale
+           eigen_matrix
     )pbdoc";
     m.attr("__version__") = "dev";
 }
