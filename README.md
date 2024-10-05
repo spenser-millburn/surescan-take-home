@@ -1,7 +1,7 @@
 # SureScan Takehome Project - Spenser Millburn
 
 ## Overview
-This project is a takehome assignment for SureScan. The purpose of the contained application is to apply image processing/transformations.
+This project is a takehome assignment for SureScan. The purpose of the app is to apply image processing/transformations.
 
 ## Usage
 - **GUI**: Once the Docker services are up, you can interact with the Qt GUI to browse and display images.
