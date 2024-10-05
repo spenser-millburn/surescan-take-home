@@ -51,7 +51,3 @@ docker-compose up --build qt_gui
 
 The transformed images appear in the output directory. Alertnatively
 
-
-
-## Conclusion
-This project demonstrates the integration of a Qt-based GUI with a Python CLI application that uses a C++ backend for image processing
