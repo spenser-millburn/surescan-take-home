@@ -4,7 +4,7 @@
 This project is a takehome assignment for SureScan. The purpose of the contained application is to apply image processing/transformations.
 
 ## Usage
-- **GUI **: Once the Docker services are up, you can interact with the Qt GUI to browse and display images.
+- **GUI**: Once the Docker services are up, you can interact with the Qt GUI to browse and display images.
 
       - TODO add image
 
