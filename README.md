@@ -10,10 +10,10 @@ This project is a takehome assignment for SureScan. The purpose of the contained
 
 - **CLI**: The CLI interface will automatically process images placed in the specified input directory, applying the defined transformations and saving the results to a specified output directory.
 
-``
+```
 [N] ~/e/r/s/s/python_cli_wrapper ❯❯❯ docker-compose run --rm python_cli_wrapper python3 python_cli_wrapper/main.py  --help
                                                                                                                                                                      
- Usage: main.py [OPTIONS]                                                                                                                                            
+ Usage: main.py [OPTIONS]              
                                                                                                                                                                      
 ╭─ Options ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
 │ *  --transformation-type        TEXT  Type of transformation to apply [default: None] [required]                                                                  │
@@ -23,7 +23,7 @@ This project is a takehome assignment for SureScan. The purpose of the contained
 │    --show-completion                  Show completion for the current shell, to copy it or customize the installation.                                            │
 │    --help                             Show this message and exit.                                                                                                 │
 ╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
-``
+```
 
 ## Components
 1. **Qt GUI Application**: A desktop application built using Qt that allows users to browse and display images. It is designed to be simple and intuitive, providing basic image viewing capabilities.
