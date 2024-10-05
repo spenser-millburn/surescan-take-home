@@ -43,11 +43,16 @@ To run the project, ensure you have Docker and Docker Compose installed on your 
 ```
 docker-compose run --rm python_cli_wrapper python3 python_cli_wrapper/main.py --input-dir python_cli_wrapper/images/ --transformation-type flipped_grayscale --output-dir ./python_cli_wrapper/output
 ```
+The transformed images appear in the output directory.
+
 4. Start the QT GUI 
-  - NOTE: make sure you have X_FORWARDING set up. 
+  - NOTE: make sure you have X_FORWARDING set up.
 ```
 docker-compose up --build qt_gui
 ```
+  - follow the on screen prompts. 
 
-The transformed images appear in the output directory. Alertnatively
+## Thank You
+- built with love by spenser millburn
+
 
