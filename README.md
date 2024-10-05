@@ -30,7 +30,7 @@ This project is a takehome assignment for SureScan. The purpose of the app is to
 
 2. **Python Typer Application**: A command-line interface built with Typer that automates image processing tasks. It uses a C++ backend for performing image transformations such as flipping and converting images to grayscale.
 
-3. **C++ Backend**: Utilizes OpenCV and Eigen3 libraries to perform image transformations. The backend is exposed to Python via Pybind11, allowing seamless integration with the Python.
+3. **C++ Backend**: Utilizes OpenCV and Eigen3 libraries to perform image transformations. The backend is exposed to Python via Pybind11. 
 
 ## Getting Started
 To run the project, ensure you have Docker and Docker Compose installed on your system. Follow these steps:
