@@ -7,7 +7,24 @@
 #define STRINGIFY(x) #x
 #define MACRO_STRINGIFY(x) STRINGIFY(x)
 
-class ImageProcessor {
+class Processor {
+public:
+    virtual ~Processor() = default;
+
+protected:
+    cv::Mat image;
+    Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> eigenImage;
+
+    void cv2eigen(const cv::Mat& src, Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>& dst) {
+        dst = Eigen::Map<Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>>(src.data, src.rows, src.cols);
+    }
+
+    void eigen2cv(const Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>& src, cv::Mat& dst) {
+        dst = cv::Mat(src.rows(), src.cols(), CV_8UC1, const_cast<unsigned char*>(src.data()));
+    }
+};
+
+class ImageProcessor : public Processor {
 public:
     ImageProcessor(const std::string &image_path) {
         image = cv::imread(image_path, cv::IMREAD_GRAYSCALE);
@@ -52,22 +69,11 @@ public:
         cv::imwrite(output_path, flippedMat);
         return 0; // Success
     }
-
-private:
-    cv::Mat image;
-    Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> eigenImage;
-
-    void cv2eigen(const cv::Mat& src, Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>& dst) {
-        dst = Eigen::Map<Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>>(src.data, src.rows, src.cols);
-    }
-
-    void eigen2cv(const Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>& src, cv::Mat& dst) {
-        dst = cv::Mat(src.rows(), src.cols(), CV_8UC1, const_cast<unsigned char*>(src.data()));
-    }
 };
 
 PYBIND11_MODULE(_core, m) {
-    pybind11::class_<ImageProcessor>(m, "ImageProcessor")
+    pybind11::class_<Processor>(m, "Processor");
+    pybind11::class_<ImageProcessor, Processor>(m, "ImageProcessor")
         .def(pybind11::init<const std::string &>())
         .def("flipped_grayscale", &ImageProcessor::flipped_grayscale, "A function that transforms (flips) an image and saves it to the output path.")
         .def("flip_x", &ImageProcessor::flip_x, "Flip image along x-axis.")
@@ -85,7 +91,7 @@ PYBIND11_MODULE(_core, m) {
 
         .. autosummary::
            :toctree: _generate
-           
+
            ImageProcessor
     )pbdoc";
 
