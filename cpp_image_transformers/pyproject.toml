@@ -6,7 +6,6 @@ build-backend = "scikit_build_core.build"
 name = "image_transformers"
 version = "0.0.1"
 description="surescan transformers"
-readme = "README.md"
 authors = [
   { name = "Spenser Millburn", email = "hireme<3@surescan.com" },
 ]
