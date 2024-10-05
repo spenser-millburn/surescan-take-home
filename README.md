@@ -38,7 +38,7 @@ To run the project, ensure you have Docker and Docker Compose installed on your 
 1. Clone the repository to your local machine.
 2. Navigate to the project directory.
 3. Run the following command to transform the demo images, the output will appear in ./output:
-  - Bonus: I have included a few other types of transformations, see the --help option of the cli for details. 
+  - ***Bonus:*** I have included a few other types of transformations, see the --help option of the cli for details. 
 
 ```
 docker-compose run --rm python_cli_wrapper python3 python_cli_wrapper/main.py --input-dir python_cli_wrapper/images/ --transformation-type flipped_grayscale --output-dir ./python_cli_wrapper/output
