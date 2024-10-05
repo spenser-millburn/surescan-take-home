@@ -9,7 +9,6 @@ project(
   VERSION ${SKBUILD_PROJECT_VERSION}
   LANGUAGES CXX)
 
-
 #find opencv and eigen
 find_package(Eigen3 REQUIRED)
 find_package(OpenCV REQUIRED)
@@ -21,9 +20,13 @@ find_package(pybind11 CONFIG REQUIRED)
 
 
 
-# Add a library using FindPython's tooling (pybind11 also provides a helper like
-# this)
+
+#create c++ library
+add_library(image_transformers SHARED src/main.cpp)
+
+#create python library
 python_add_library(_core MODULE src/main.cpp WITH_SOABI)
+
 target_link_libraries(_core PRIVATE ${OpenCV_LIBS} Eigen3::Eigen pybind11::headers )
 
 # This is passing in the version as a define just as an example
