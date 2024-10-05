@@ -23,7 +23,6 @@ This project is a takehome assignment for SureScan. The purpose of the contained
 │    --show-completion                  Show completion for the current shell, to copy it or customize the installation.                                            │
 │    --help                             Show this message and exit.                                                                                                 │
 ╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
- 
 ``
 
 ## Components
