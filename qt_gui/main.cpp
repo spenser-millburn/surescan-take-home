@@ -14,6 +14,7 @@ int main(int argc, char *argv[]) {
     QVBoxLayout *layout = new QVBoxLayout(&mainWindow);
 
     QLabel *imageLabel = new QLabel(&mainWindow);
+    imageLabel->setAlignment(Qt::AlignCenter); // Center the image in the label
     QPushButton *openButton = new QPushButton("Open Image", &mainWindow);
     QPushButton *rotateButton = new QPushButton("Rotate", &mainWindow);
     QPushButton *flipButton = new QPushButton("Flip", &mainWindow);
@@ -31,6 +32,9 @@ int main(int argc, char *argv[]) {
         QString fileName = QFileDialog::getOpenFileName(&mainWindow, "Open Image File", "", "Images (*.png *.xpm *.jpg)");
         if (!fileName.isEmpty()) {
             image.load(fileName);
+            int fixedWidth = 400; // Fixed image width
+            int fixedHeight = 300; // Fixed image height
+            image = image.scaled(fixedWidth, fixedHeight, Qt::KeepAspectRatio, Qt::SmoothTransformation);
             imageLabel->setPixmap(QPixmap::fromImage(image));
         }
     });
@@ -40,6 +44,9 @@ int main(int argc, char *argv[]) {
             QMatrix rm;
             rm.rotate(90);
             image = image.transformed(rm);
+            int fixedWidth = 400;
+            int fixedHeight = 300;
+            image = image.scaled(fixedWidth, fixedHeight, Qt::KeepAspectRatio, Qt::SmoothTransformation);
             imageLabel->setPixmap(QPixmap::fromImage(image));
         }
     });
@@ -47,6 +54,9 @@ int main(int argc, char *argv[]) {
     QObject::connect(flipButton, &QPushButton::clicked, [&]() {
         if (!image.isNull()) {
             image = image.mirrored(true, false);
+            int fixedWidth = 400;
+            int fixedHeight = 300;
+            image = image.scaled(fixedWidth, fixedHeight, Qt::KeepAspectRatio, Qt::SmoothTransformation);
             imageLabel->setPixmap(QPixmap::fromImage(image));
         }
     });
@@ -60,12 +70,16 @@ int main(int argc, char *argv[]) {
                     image.setPixelColor(x, y, QColor(gray, gray, gray));
                 }
             }
+            int fixedWidth = 400;
+            int fixedHeight = 300;
+            image = image.scaled(fixedWidth, fixedHeight, Qt::KeepAspectRatio, Qt::SmoothTransformation);
             imageLabel->setPixmap(QPixmap::fromImage(image));
         }
     });
 
     mainWindow.setLayout(layout);
     mainWindow.setWindowTitle("MyImageBrowser");
+    mainWindow.setFixedSize(800, 600); // Set fixed window size
     mainWindow.show();
 
     return app.exec();
