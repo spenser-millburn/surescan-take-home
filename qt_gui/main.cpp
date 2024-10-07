@@ -17,13 +17,15 @@ int main(int argc, char *argv[]) {
     imageLabel->setAlignment(Qt::AlignCenter); // Center the image in the label
     QPushButton *openButton = new QPushButton("Open Image", &mainWindow);
     QPushButton *rotateButton = new QPushButton("Rotate", &mainWindow);
-    QPushButton *flipButton = new QPushButton("Flip", &mainWindow);
+    QPushButton *flipXButton = new QPushButton("Flip X-Axis", &mainWindow);
+    QPushButton *flipYButton = new QPushButton("Flip Y-Axis", &mainWindow);
     QPushButton *grayscaleButton = new QPushButton("Grayscale", &mainWindow);
 
     layout->addWidget(imageLabel);
     layout->addWidget(openButton);
     layout->addWidget(rotateButton);
-    layout->addWidget(flipButton);
+    layout->addWidget(flipXButton);
+    layout->addWidget(flipYButton);
     layout->addWidget(grayscaleButton);
 
     QImage image;
@@ -51,9 +53,19 @@ int main(int argc, char *argv[]) {
         }
     });
 
-    QObject::connect(flipButton, &QPushButton::clicked, [&]() {
+    QObject::connect(flipXButton, &QPushButton::clicked, [&]() {
         if (!image.isNull()) {
-            image = image.mirrored(true, false);
+            image = image.mirrored(true, false); // Flip along the X-axis
+            int fixedWidth = 400;
+            int fixedHeight = 300;
+            image = image.scaled(fixedWidth, fixedHeight, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+            imageLabel->setPixmap(QPixmap::fromImage(image));
+        }
+    });
+
+    QObject::connect(flipYButton, &QPushButton::clicked, [&]() {
+        if (!image.isNull()) {
+            image = image.mirrored(false, true); // Flip along the Y-axis
             int fixedWidth = 400;
             int fixedHeight = 300;
             image = image.scaled(fixedWidth, fixedHeight, Qt::KeepAspectRatio, Qt::SmoothTransformation);
