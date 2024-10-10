@@ -36,7 +36,6 @@ set_target_properties(image_processor_demo PROPERTIES INSTALL_RPATH "${CMAKE_INS
 
 set_target_properties(image_processor_demo PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
-
 # Installation rules
 install(TARGETS image_processor_lib
   LIBRARY DESTINATION lib/${PROJECT_NAME})
@@ -49,3 +48,25 @@ install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/
         FILES_MATCHING PATTERN "*.h")
 
 
+# include(CMakePackageConfigHelpers)
+
+# # Create version and config files for the library
+# write_basic_package_version_file(
+#         "${CMAKE_CURRENT_BINARY_DIR}/ImageProcessorConfigVersion.cmake"
+#         VERSION ${PROJECT_VERSION}
+#         COMPATIBILITY AnyNewerVersion
+# )
+
+# configure_package_config_file(
+#         "${CMAKE_CURRENT_SOURCE_DIR}/cmake/ImageProcessorConfig.cmake.in"
+#         "${CMAKE_CURRENT_BINARY_DIR}/ImageProcessorConfig.cmake"
+#         INSTALL_DESTINATION lib/cmake/${PROJECT_NAME}
+# )
+
+# # Install the config and version files
+# install(FILES
+#         "${CMAKE_CURRENT_BINARY_DIR}/ImageProcessorConfig.cmake"
+#         "${CMAKE_CURRENT_BINARY_DIR}/ImageProcessorConfigVersion.cmake"
+#         DESTINATION lib/cmake/${PROJECT_NAME}
+# )
+        
