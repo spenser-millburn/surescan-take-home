@@ -1,0 +1,36 @@
+@PACKAGE_INIT@
+
+include(CMakeFindDependencyMacro)
+
+# Log debug messages about the current package initialization
+message(STATUS "Initializing ImageProcessor Package")
+message(STATUS "Current CMake version: ${CMAKE_VERSION}")
+message(STATUS "CMake install prefix: ${CMAKE_INSTALL_PREFIX}")
+message(STATUS "Looking for required dependencies...")
+
+# Find the required dependencies and log their locations
+find_dependency(Python3 REQUIRED COMPONENTS Development)
+message(STATUS "Found Python3 Include Dir: ${Python3_INCLUDE_DIRS}")
+message(STATUS "Found Python3 Libraries: ${Python3_LIBRARIES}")
+
+find_dependency(Eigen3 REQUIRED)
+message(STATUS "Found Eigen3 Include Dir: ${EIGEN3_INCLUDE_DIR}")
+
+find_dependency(OpenCV REQUIRED)
+message(STATUS "Found OpenCV Include Dir: ${OpenCV_INCLUDE_DIRS}")
+message(STATUS "Found OpenCV Libraries: ${OpenCV_LIBS}")
+
+find_dependency(LLVM REQUIRED CONFIG)
+message(STATUS "Found LLVM Include Dir: ${LLVM_INCLUDE_DIRS}")
+message(STATUS "Found LLVM Libraries: ${LLVM_LIBS}")
+
+# Import the targets from the installed library and log that it's done
+include("${CMAKE_CURRENT_LIST_DIR}/ImageProcessorTargets.cmake")
+
+# Include directories
+include_directories(${Python3_INCLUDE_DIRS})
+include_directories(${LLVM_INCLUDE_DIRS})
+include_directories(${OpenCV_INCLUDE_DIRS})
+include_directories(${EIGEN3_INCLUDE_DIRS})  # Include Eigen3 directories
+
+message(STATUS "Successfully included ImageProcessorTargets.cmake")

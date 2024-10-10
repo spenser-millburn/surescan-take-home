@@ -1,6 +1,0 @@
-- Ensure that `Processor` and `ImageProcessor` are correctly imported from the `_core` module.
-- Verify that `__doc__` and `__version__` are defined in `_core`.
-- Check if `__all__` correctly lists the intended public API components.
-- Confirm that the `from __future__ import annotations` is necessary for your use case.
-- Ensure that the file structure supports relative imports, as used here.
-- Validate that no syntax errors are present in the modified code.
