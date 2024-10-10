@@ -21,27 +21,31 @@ include_directories(${LLVM_INCLUDE_DIRS} ${Python3_INCLUDE_DIRS})
 message(STATUS "Building Image Processing Libs")
 
 # Build the C++ shared library
-add_library(image_processor_lib SHARED image_processor.cpp)
+add_library(image_processor_lib SHARED src/image_processor.cpp)
 
 target_link_libraries(image_processor_lib PRIVATE ${OpenCV_LIBS} Eigen3::Eigen ${LLVM_LIBS} Python3::Python)
-target_include_directories(image_processor_lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(image_processor_lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 # Build the C++ executable
-add_executable(image_processor_demo main.cpp)
+add_executable(image_processor_demo src/main.cpp)
 target_link_libraries(image_processor_demo PRIVATE image_processor_lib ${OpenCV_LIBS} Eigen3::Eigen ${LLVM_LIBS} Python3::Python)
 
 # Set output directories
-set_target_properties(image_processor_lib PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
+# set_target_properties(image_processor_lib PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
+set_target_properties(image_processor_demo PROPERTIES INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
+
 set_target_properties(image_processor_demo PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+
 
 # Installation rules
 install(TARGETS image_processor_lib
-        LIBRARY DESTINATION lib)
+  LIBRARY DESTINATION lib/${PROJECT_NAME})
 
 install(TARGETS image_processor_demo
         RUNTIME DESTINATION bin)
 
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        DESTINATION include)
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/
+        DESTINATION include/${PROJECT_NAME}
+        FILES_MATCHING PATTERN "*.h")
 
 

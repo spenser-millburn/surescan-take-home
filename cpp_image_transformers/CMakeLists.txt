@@ -22,8 +22,8 @@ find_package(pybind11 CONFIG REQUIRED)
 # Add a library using FindPython's tooling (pybind11 also provides a helper like
 # this)
 python_add_library(_core MODULE
-  src/image_processor.cpp
-  src/module.cpp
+  src/src/image_processor.cpp
+  src/src/module.cpp
   WITH_SOABI)
 
 target_link_libraries(_core PRIVATE ${OpenCV_LIBS} Eigen3::Eigen pybind11::headers )
