@@ -19,12 +19,14 @@ find_package(OpenCV REQUIRED)
 find_package(Python REQUIRED COMPONENTS Interpreter Development.Module)
 find_package(pybind11 CONFIG REQUIRED)
 
+include_directories(${CMAKE_SOURCE_DIR}/transformer_library/include)
 # Add a library using FindPython's tooling (pybind11 also provides a helper like
 # this)
 python_add_library(_core MODULE
   transformer_library/src/image_processor.cpp
   transformer_library/src/python_interface.cpp
   WITH_SOABI)
+
 
 target_link_libraries(_core PRIVATE ${OpenCV_LIBS} Eigen3::Eigen pybind11::headers )
 
@@ -33,3 +35,5 @@ target_compile_definitions(_core PRIVATE VERSION_INFO=${PROJECT_VERSION})
 
 # The install directory is the output (wheel) directory
 install(TARGETS _core DESTINATION image_transformers)
+install(FILES ${CMAKE_SOURCE_DIR}/transformer_library/image_transformers/__init__.py DESTINATION image_transformers)
+
