@@ -23,7 +23,7 @@ find_package(pybind11 CONFIG REQUIRED)
 # this)
 python_add_library(_core MODULE
   transformer_library/src/image_processor.cpp
-  transformer_library/src/module.cpp
+  transformer_library/src/python_interface.cpp
   WITH_SOABI)
 
 target_link_libraries(_core PRIVATE ${OpenCV_LIBS} Eigen3::Eigen pybind11::headers )

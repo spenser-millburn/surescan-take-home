@@ -33,7 +33,7 @@ target_include_directories(image_processor_lib
 target_link_libraries(image_processor_lib PRIVATE ${OpenCV_LIBS} Eigen3::Eigen ${LLVM_LIBS} Python3::Python)
 
 # Build the C++ executable
-add_executable(image_processor_demo src/main.cpp)
+add_executable(image_processor_demo src/example.cpp)
 target_link_libraries(image_processor_demo PRIVATE image_processor_lib ${OpenCV_LIBS} Eigen3::Eigen ${LLVM_LIBS} Python3::Python)
 
 # Set output directories
