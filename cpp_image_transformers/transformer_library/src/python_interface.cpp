@@ -11,7 +11,6 @@ PYBIND11_MODULE(_core, m) {
         .def("rotate_left", &ImageProcessor::rotate_left, "Rotate image 90 degrees to the left.")
         .def("rotate_right", &ImageProcessor::rotate_right, "Rotate image 90 degrees to the right.")
         .def("grayscale", &ImageProcessor::grayscale, "Convert image to grayscale.")
-        .def("eigen_matrix", &ImageProcessor::eigen_matrix, "Return the Eigen matrix of the image.")
         .def("write_image", &ImageProcessor::write_image, "Write the matrix to a file")
         .def("get_image", &ImageProcessor::get_image, "Return the Eigen matrix of the image.");
 
