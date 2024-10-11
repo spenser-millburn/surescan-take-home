@@ -1,4 +1,5 @@
 #include "image_processor.h"
+#include <opencv2/opencv.hpp>
 #include <stdexcept>
 
 void Processor::cv2eigen(const cv::Mat& src, Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>& dst) 
@@ -11,67 +12,79 @@ void Processor::eigen2cv(const Eigen::Matrix<unsigned char, Eigen::Dynamic, Eige
     dst = cv::Mat(src.rows(), src.cols(), CV_8UC1, const_cast<unsigned char*>(src.data()));
 }
 
-ImageProcessor::ImageProcessor(const std::string &image_path) 
+
+ImageProcessor::ImageProcessor(const std::string &image_path)
 {
-    m_raw_image = cv::imread(image_path, cv::IMREAD_GRAYSCALE);
-    if (m_raw_image.empty()) 
+    read_image(image_path);
+}
+
+void ImageProcessor::read_image(const std::string &image_path)
+{
+    // Read the image in color
+    m_raw_image = cv::imread(image_path, cv::IMREAD_COLOR);
+    if (m_raw_image.empty())
     {
         throw std::runtime_error("Error: Could not open or find the image.");
     }
-    cv2eigen(m_raw_image, m_eigen_image);
 }
 
-void ImageProcessor::flip_x() 
+void ImageProcessor::flip_x()
 {
-    m_eigen_image = m_eigen_image.rowwise().reverse();
+    cv::flip(m_raw_image, m_raw_image, 0); // Flip around x-axis
 }
 
-void ImageProcessor::flip_y() 
+void ImageProcessor::flip_y()
 {
-    m_eigen_image = m_eigen_image.colwise().reverse();
+    cv::flip(m_raw_image, m_raw_image, 1); // Flip around y-axis
 }
 
-void ImageProcessor::rotate_left() 
+void ImageProcessor::rotate_left()
 {
-    m_eigen_image = m_eigen_image.transpose().colwise().reverse();
+    cv::rotate(m_raw_image, m_raw_image, cv::ROTATE_90_COUNTERCLOCKWISE);
 }
 
-void ImageProcessor::rotate_right() 
+void ImageProcessor::rotate_right()
 {
-    m_eigen_image = m_eigen_image.transpose().rowwise().reverse();
+    cv::rotate(m_raw_image, m_raw_image, cv::ROTATE_90_CLOCKWISE);
 }
 
-void ImageProcessor::grayscale() 
+void ImageProcessor::grayscale()
 {
+    // Convert the image to grayscale
+    cv::cvtColor(m_raw_image, m_raw_image, cv::COLOR_BGR2GRAY);
 }
 
-int ImageProcessor::flipped_grayscale(const std::string &output_path) 
+int ImageProcessor::flipped_grayscale(const std::string &output_path)
 {
-    m_eigen_image = m_eigen_image.colwise().reverse();
-    cv::Mat l_flipped_mat;
-    eigen2cv(m_eigen_image, l_flipped_mat);
-    cv::imwrite(output_path, l_flipped_mat);
-    return 0; // Success
+    cv::Mat flipped_img;
+    cv::flip(m_raw_image, flipped_img, 1); // Flip around y-axis for example
+    cv::Mat gray_img;
+    cv::cvtColor(flipped_img, gray_img, cv::COLOR_BGR2GRAY); // Convert flipped image to grayscale
+    return cv::imwrite(output_path, gray_img) ? 0 : -1; // Success or failure
 }
 
 pybind11::array_t<unsigned char> ImageProcessor::get_image()
 {
-    return pybind11::array_t<unsigned char>({m_eigen_image.rows(), m_eigen_image.cols()}, m_eigen_image.data());
+    cv2eigen(m_raw_image, m_eigen_image);
+    return pybind11::array_t<unsigned char>({m_eigen_image.rows(), m_eigen_image.cols()}, m_eigen_image.data()); 
 }
 
-void ImageProcessor::write_image(const std::string &output_path, const std::string &format) {
-    cv::Mat outputMat;
-    eigen2cv(m_eigen_image, outputMat);
+void ImageProcessor::write_image(const std::string &output_path, const std::string &format)
+{
     std::vector<int> compression_params;
-    if (format == "jpg" || format == "jpeg") 
+    if (format == "jpg" || format == "jpeg")
     {
         compression_params.push_back(cv::IMWRITE_JPEG_QUALITY);
-        compression_params.push_back(95); // Default quality
-    } 
-    else if (format == "png") 
+        compression_params.push_back(95); // High quality
+    }
+    else if (format == "png")
     {
         compression_params.push_back(cv::IMWRITE_PNG_COMPRESSION);
-        compression_params.push_back(3); // Default compression level
+        compression_params.push_back(3); // Medium compression
     }
-    cv::imwrite(output_path, outputMat, compression_params);
+
+    if (!cv::imwrite(output_path, m_raw_image, compression_params))
+    {
+        throw std::runtime_error("Failed to write image to file.");
+    }
 }

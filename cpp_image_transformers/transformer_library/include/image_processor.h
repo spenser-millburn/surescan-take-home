@@ -14,7 +14,6 @@ public:
 protected:
     cv::Mat m_raw_image;
     Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> m_eigen_image;
-
     void cv2eigen(const cv::Mat& src, Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>& dst);
     void eigen2cv(const Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>& src, cv::Mat& dst);
 };
@@ -31,6 +30,7 @@ public:
     pybind11::array_t<unsigned char> get_image();
 
     int flipped_grayscale(const std::string &output_path);
+    void read_image(const std::string &image_path);
     void write_image(const std::string &output_path, const std::string &format);
 };
 
