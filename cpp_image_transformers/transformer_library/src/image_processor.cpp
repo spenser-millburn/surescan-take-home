@@ -63,10 +63,13 @@ void ImageProcessor::write_image(const std::string &output_path, const std::stri
     cv::Mat outputMat;
     eigen2cv(m_eigen_image, outputMat);
     std::vector<int> compression_params;
-    if (format == "jpg" || format == "jpeg") {
+    if (format == "jpg" || format == "jpeg") 
+    {
         compression_params.push_back(cv::IMWRITE_JPEG_QUALITY);
         compression_params.push_back(95); // Default quality
-    } else if (format == "png") {
+    } 
+    else if (format == "png") 
+    {
         compression_params.push_back(cv::IMWRITE_PNG_COMPRESSION);
         compression_params.push_back(3); // Default compression level
     }
