@@ -71,7 +71,6 @@ public:
     void read_image(const std::string &image_path);
     void write_image(const std::string &output_path, const std::string &format);
 
-
 };
 
 #endif // IMAGE_PROCESSOR_H

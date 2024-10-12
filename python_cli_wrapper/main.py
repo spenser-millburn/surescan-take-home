@@ -18,25 +18,25 @@ logger = logging.getLogger(__name__)
 TRANSFORMATION_ALGORITHMS = ImageProcessor().get_transformations()
 
 def transform(image_path: Path, output_dir: Path, transformation_types: List[str]):
-    """Transform a single image with a sequence of transformations applied to the same image."""
+    """transforms a single image with a sequence of transformations applied to the same image."""
     src = image_path.as_posix()
     name, ext = os.path.splitext(image_path.name)
     dest = (output_dir / f"{name}_{'_'.join(transformation_types)}{ext}").resolve().as_posix()
     logger.info(f"Transforming {image_path} with transformations {transformation_types} to {dest}")
 
-    # Load the image once
+    # load
     im = ImageProcessor(src)
 
-    # Apply all transformations in sequence
+    # apply all transformatiosn
     for transformation_type in transformation_types:
         logger.info(f"Applying transformation: {transformation_type}")
         im.apply_transformation(transformation_type)
 
-    # Write the final transformed image
+    # write image to dest
     im.write_image(dest, ext)
 
 def find_images(input_dir):
-    """Use glob to find all images in the input directory."""
+    """globs images in input dir and returns a list of paths"""
     image_paths = glob.glob(os.path.join(input_dir, '*'))
 
     if not image_paths:
@@ -49,12 +49,12 @@ def find_images(input_dir):
 @Timer(text="Function transform_images executed in {seconds:.5f} seconds")
 def transform_images(transformation_types: List[str], input_dir: str, output_dir: str):
     """
-    Transform images from the input directory and save them to the output directory using multiple transformations.
+    transform images from the input directory and save them to the output directory using multiple transformations.
     """
     input_dir_path = Path(input_dir).resolve()
     output_dir_path = (Path(output_dir) / 'images').resolve()
 
-    # Validate transformation types
+    #validation
     for transformation_type in transformation_types:
         if transformation_type not in TRANSFORMATION_ALGORITHMS:
             logger.critical(f"Invalid transformation \"{transformation_type}\", options: {TRANSFORMATION_ALGORITHMS}")
@@ -72,14 +72,14 @@ def transform_images(transformation_types: List[str], input_dir: str, output_dir
 
     logger.info("Transforming images...")
 
-    # Use ThreadPoolExecutor to transform images concurrently
+    # transform images concurrently
     with ThreadPoolExecutor() as executor:
         futures = []
         for image_path in image_paths:
             futures.append(executor.submit(transform, image_path, output_dir_path, transformation_types))
         
         for future in futures:
-            future.result()  # Wait for each transformation to complete
+            future.result() 
 
     logger.info("Image transformation completed.")
 
