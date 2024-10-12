@@ -13,9 +13,9 @@ RUN pip3 install typer
 
 #IMAGE TRANSFORMATIONS
 WORKDIR /app
-COPY ./cpp_image_transformers ./cpp_image_transformers 
-RUN pip3 install ./cpp_image_transformers
-WORKDIR /app/cpp_image_transformers
+COPY ./cpp_image_transformers_library ./cpp_image_transformers_library
+RUN pip3 install ./cpp_image_transformers_library
+WORKDIR /app/cpp_image_transformers_library
 # CMD ["python3", "-c", "import image_transformers; image_transformers.flipped_grayscale('./cat.jpg','./output.jpg')"]
 
 #Typer CLI Wrapper
