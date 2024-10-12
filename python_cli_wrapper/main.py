@@ -14,8 +14,9 @@ from codetiming import Timer
 # Initialize logger
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
+surescan_processor = ImageProcessor()
 
-TRANSFORMATION_ALGORITHMS = ImageProcessor().get_transformations()
+TRANSFORMATION_ALGORITHMS = surescan_processor.get_transformations()
 
 def transform(image_path: Path, output_dir: Path, transformation_types: List[str]):
     """transforms a single image with a sequence of transformations applied to the same image."""
@@ -24,16 +25,16 @@ def transform(image_path: Path, output_dir: Path, transformation_types: List[str
     dest = (output_dir / f"{name}_{'_'.join(transformation_types)}{ext}").resolve().as_posix()
     logger.info(f"Transforming {image_path} with transformations {transformation_types} to {dest}")
 
-    # load
-    im = ImageProcessor(src)
+    # load the image into the processors
+    surescan_processor = ImageProcessor(src)
 
     # apply all transformatiosn
     for transformation_type in transformation_types:
         logger.info(f"Applying transformation: {transformation_type}")
-        im.apply_transformation(transformation_type)
+        surescan_processor.apply_transformation(transformation_type)
 
     # write image to dest
-    im.write_image(dest, ext)
+    surescan_processor.write_image(dest, ext)
 
 def find_images(input_dir):
     """globs images in input dir and returns a list of paths"""
@@ -43,8 +44,6 @@ def find_images(input_dir):
         logger.error("No images found in the input directory.")
         exit(1)
     return [Path(path) for path in image_paths]
-
-
 
 @Timer(text="Function transform_images executed in {seconds:.5f} seconds")
 def transform_images(transformation_types: List[str], input_dir: str, output_dir: str):
