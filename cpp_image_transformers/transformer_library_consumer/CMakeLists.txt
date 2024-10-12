@@ -35,3 +35,4 @@ target_link_libraries(another_project PRIVATE
     ${Python3_LIBRARIES}
     Eigen3::Eigen  # Link Eigen3
 )
+

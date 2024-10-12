@@ -20,8 +20,17 @@ ImageProcessor::ImageProcessor(const std::string &image_path)
 
 void ImageProcessor::read_image(const std::string &image_path)
 {
-    // Read the image in color
+    m_raw_image_path = image_path;
     m_raw_image = cv::imread(image_path, cv::IMREAD_COLOR);
+    if (m_raw_image.empty())
+    {
+        throw std::runtime_error("Error: Could not open or find the image.");
+    }
+}
+
+void ImageProcessor::reset_image()
+{
+    m_raw_image = cv::imread(m_raw_image_path, cv::IMREAD_COLOR);
     if (m_raw_image.empty())
     {
         throw std::runtime_error("Error: Could not open or find the image.");
@@ -48,11 +57,21 @@ void ImageProcessor::rotate_right()
     cv::rotate(m_raw_image, m_raw_image, cv::ROTATE_90_CLOCKWISE);
 }
 
-void ImageProcessor::grayscale()
-{
-    // Convert the image to grayscale
-    cv::cvtColor(m_raw_image, m_raw_image, cv::COLOR_BGR2GRAY);
+void ImageProcessor::grayscale() {
+    // Check if the image is already grayscale
+    if (m_raw_image.channels() == 1) {
+        std::cout << "Image is already in grayscale. Skipping conversion." << std::endl;
+        return;  // Skip conversion if already grayscale
+    }
+
+    // Create a temporary image to hold the grayscale conversion
+    cv::Mat grayImage;
+    cv::cvtColor(m_raw_image, grayImage, cv::COLOR_BGR2GRAY);
+
+    // Update the image with the grayscale version
+    m_raw_image = grayImage;
 }
+
 
 int ImageProcessor::flipped_grayscale(const std::string &output_path)
 {
@@ -88,3 +107,4 @@ void ImageProcessor::write_image(const std::string &output_path, const std::stri
         throw std::runtime_error("Failed to write image to file.");
     }
 }
+
