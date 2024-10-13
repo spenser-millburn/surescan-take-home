@@ -18,7 +18,7 @@ public:
         btnOpen = new QPushButton("Open Image", this);
         btnSave = new QPushButton("Save Processed Image", this);
         infoLabel = new QLabel("Select an image to process", this);
-        pixelDensityLabel= new QLabel("Select an image to process", this);
+        pixelDensityLabel= new QLabel("", this);
         imageLabel = new QLabel(this); // Label to display the image
         imageLabel->setAlignment(Qt::AlignCenter);
         

@@ -19,13 +19,15 @@ RUN pip3 install ./cpp_image_transformers_library
 WORKDIR /app/cpp_image_transformers_library/transformer_library
 SHELL ["/bin/bash", "-c"]
 RUN python3 -m pybind11 --include
-RUN rm -rf build && mkdir -p build && cd build && cmake .. && make install
+RUN rm -rf build && mkdir -p build && cd build && cmake .. && make package install
+RUN mkdir -p /output && cp ./build/*.deb /output
 
 # Building the Desktop GUI executable 
 WORKDIR /app
 COPY ./qt_gui_wrapper ./qt_gui_wrapper
 WORKDIR /app/qt_gui_wrapper
-RUN rm -rf build && mkdir -p build && cd build && cmake .. && make install
+RUN rm -rf build && mkdir -p build && cd build && cmake .. && make package install 
+RUN mkdir -p /output && cp ./build/*.deb /output
 WORKDIR /app/cpp_image_transformers_library
 
 #Typer CLI Wrapper
