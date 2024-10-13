@@ -44,19 +44,32 @@ docker compose up --build
 [I] ~/e/r/surescan-take-home ❯❯❯ docker compose run -it python_tui bash -c "python3 /app/python_wrappers/cli.py --help"                          master ✭ ◼
 
 Usage: cli.py [OPTIONS]                                                                                                                                  
-                                                                                                                                                           
-╭─ Options ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
-│ *  --transformation            TEXT  Transformation(s) to apply, options are ['flip_x_axis', 'flip_y_axis', 'grayscale', 'reset_image', 'rotate_left',  │
-│                                      'rotate_right']. NOTE: you may pass multiple transformations like --transformation flip_x --transformation         │
-│                                      grayscale                                                                                                          │
-│                                      [default: None]                                                                                                    │
-│                                      [required]                                                                                                         │
-│ *  --input-dir                 TEXT  Directory containing input images [default: None] [required]                                                       │
-│    --output-dir                TEXT  Directory to save transformed images [default: ./output]                                                           │
-│    --install-completion              Install completion for the current shell.                                                                          │
-│    --show-completion                 Show completion for the current shell, to copy it or customize the installation.                                   │
-│    --help                            Show this message and exit.                                                                                        │
-╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+                                                                       
+╭─ Options ───────────────────────────────────────────────────────────╮
+│ *  --transformation            TEXT  Transformation(s) to apply,    │
+│                                      options are ['flip_x_axis',    │
+│                                      'flip_y_axis', 'grayscale',    │
+│                                      'reset_image', 'rotate_left',  │
+│                                      'rotate_right']. NOTE: you may │
+│                                      pass multiple transformations  │
+│                                      like --transformation flip_x   │
+│                                      --transformation grayscale     │
+│                                      [default: None]                │
+│                                      [required]                     │
+│ *  --input-dir                 TEXT  Directory containing input     │
+│                                      images                         │
+│                                      [default: None]                │
+│                                      [required]                     │
+│    --output-dir                TEXT  Directory to save transformed  │
+│                                      images                         │
+│                                      [default: ./output]            │
+│    --install-completion              Install completion for the     │
+│                                      current shell.                 │
+│    --show-completion                 Show completion for the        │
+│                                      current shell, to copy it or   │
+│                                      customize the installation.    │
+│    --help                            Show this message and exit.    │
+╰─────────────────────────────────────────────────────────────────────╯
 ```
 
   - The transformed images appear in the `./output` directory on the host.
