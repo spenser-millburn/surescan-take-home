@@ -6,7 +6,8 @@ on:
       - master
   pull_request:
     branches:
-      - master 
+      - master
+
 jobs:
   build-test-deploy:
     runs-on: ubuntu-20.04
@@ -23,23 +24,26 @@ jobs:
       # Build the Docker image
       - name: Build Docker image
         run: docker build -t surescan_image .
+#
+      # - name: Run Python unit tests in Docker
+        # run: docker run --rm surescan_image bash -c "pip install pytest && pytest ./python_wrappers/unit_tests.py"
 
-      - name: Run C++ googletests 
-        run: docker run --rm surescan_image bash -c "export GTEST_OUTPUT='xml:/output/transformer_lib_test_results.xml';/app/cpp_image_transformers_library/transformer_library/build/unit_tests /app/images/sunflower.jpg;ls /output;"
+      - name: Run C++ googletests
+        run: docker run --rm -v ${{ github.workspace }}/output:/output surescan_image bash -c "export GTEST_OUTPUT='xml:/output/transformer_lib_test_results.xml';/app/cpp_image_transformers_library/transformer_library/build/unit_tests /app/images/sunflower.jpg;ls /output;"
 
-      # Optionally, upload test results as an artifact
+      # upload test results as an artifact
       - name: Upload Test Results
         if: always()
         uses: actions/upload-artifact@v3
         with:
           name: test-results
-          path: /output/transformer_lib_test_results.xml
+          path: ./output/transformer_lib_test_results.xml
 
-      # Run the Docker container to build the Debian package
+      # save the debs
       - name: Build Debian Package
         run: docker run --rm -v ${{ github.workspace }}/output:/out surescan_image sh -c "cp /output/* /out"
 
-      # Upload the .deb package as an artifact
+      # upload debs as artifacts
       - name: Upload Debian Package
         uses: actions/upload-artifact@v3
         with:
