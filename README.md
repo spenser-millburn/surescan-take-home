@@ -13,8 +13,14 @@ This project is a takehome assignment for SureScan. The purpose of the app is to
 #### System Design
 <table align="center">
   <tr>
-    <td><img src="./docs/assets/Architecture.svg"></td>
-    <td><img src="./docs/assets/ImageProcessorV2.svg"></td>
+    <td>
+      <img src="./docs/assets/Architecture.svg" alt="Architecture Diagram">
+      <p>Architecture Diagram</p>
+    </td>
+    <td>
+      <img src="./docs/assets/ImageProcessorV2.svg" alt="Image Processor V2 Diagram">
+      <p>Image Processor V2 Diagram</p>
+    </td>
   </tr>
 </table>
 
@@ -25,7 +31,7 @@ This project is a takehome assignment for SureScan. The purpose of the app is to
 ### Quickstart - Launch ALL Clients
 - Ensure Docker Compose is installed.
 - The desktop client uses X Forwarding, so you may need to run `xhost +`.
-- Ensure that ports `8000` and `3000` are open and not blocked/binded to by other applications. 
+- Ensure that ports `8000` and `3000` are open and not blocked/binded to by other applications.
 
 ```
 docker compose up --build
@@ -34,27 +40,26 @@ docker compose up --build
 ### Launching and Using Individual Services
 - **DESKTOP C++ QT5 GUI**:
   - Should pop up on the screen. Select an image and follow the on-screen prompts.
-  - Command: 
+  - Command:
     ```
     docker compose run -it qt_gui_wrapper
     ```
     <table align="center">
       <tr>
-        <td><img src="./docs/assets/QT_GUI.png"></td>
+        <td><img src="./docs/assets/QT_GUI.png" alt="QT GUI"></td>
       </tr>
     </table>
+
 - **Python Terminal UI**:
   - Automatically processes images placed in the specified input directory, applying the defined transformations and saving the results to the output directory.
   - Command:
     ```shell
     docker compose run -it python_tui bash -c "python3 /app/python_wrappers/cli.py --input-dir ./images/ --transformation flip_x_axis --transformation grayscale --output-dir ./output"
     ```
-  - Man Page:  
+  - Man Page:
     ```
     [I] ~/e/r/surescan-take-home ❯❯❯ docker compose run -it python_tui bash -c "python3 /app/python_wrappers/cli.py --help"                          master ✭ ◼
-
-    Usage: cli.py [OPTIONS]                                                                                                                                  
-                                                                           
+    Usage: cli.py [OPTIONS]
     ╭─ Options ───────────────────────────────────────────────────────────╮
     │ *  --transformation            TEXT  Transformation(s) to apply,    │
     │                                      options are ['flip_x_axis',    │
@@ -81,15 +86,16 @@ docker compose up --build
     │    --help                            Show this message and exit.    │
     ╰─────────────────────────────────────────────────────────────────────╯
     ```
-
   - The transformed images appear in the `./output` directory on the host.
+
 - **Typescript React Web GUI**:
   - Browse to [http://localhost:3000](http://localhost:3000) and follow on-screen prompts. You may either upload a single image or a tarball of images.
     <table align="center">
       <tr>
-        <td><img src="./docs/assets/webgui.png"></td>
+        <td><img src="./docs/assets/webgui.png" alt="Web GUI"></td>
       </tr>
     </table>
+
 - **REST API**:
   - See RESTful API documentation at [http://localhost:8000/docs](http://localhost:8000/docs).
 
