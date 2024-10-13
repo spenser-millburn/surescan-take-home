@@ -3,11 +3,11 @@
 ## Overview
 This project is a takehome assignment for SureScan. The purpose of the app is to apply image processing/transformations.
 
-## Setup Instructions
+## Architecture
 
 - **Core Transformation Logic**: Implemented as a C++ library. Debian package artifacts are published via CI for installation.
 - **APIs**: Exposed to both Python and C++ bindings.
-- **Clients**: Desktop, CLI, and web clients wrap the library and are built and run as Docker Compose services.
+- **Clients**: Desktop, CLI, and web (via rest API) clients wrap the library and are built and run as Docker Compose services.
 
 ## Usage
 
