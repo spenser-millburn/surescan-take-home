@@ -12,161 +12,137 @@
 
 class ImageProcessorGUI : public QWidget {
 public:
-    ImageProcessorGUI(QWidget *parent = nullptr) : QWidget(parent), imgProcessor(nullptr) {
-        auto *layout = new QVBoxLayout(this);
+    ImageProcessorGUI(QWidget *parent = nullptr) : QWidget(parent), m_img_processor(nullptr) {
+        auto *l_layout = new QVBoxLayout(this);
 
-        btnOpen = new QPushButton("Open Image", this);
-        btnSave = new QPushButton("Save Processed Image", this);
-        infoLabel = new QLabel("Select an image to process", this);
-        pixelDensityLabel= new QLabel("", this);
-        imageLabel = new QLabel(this); // Label to display the image
-        imageLabel->setAlignment(Qt::AlignCenter);
-        
-        layout->addWidget(btnOpen);
-        layout->addWidget(infoLabel);
-        layout->addWidget(pixelDensityLabel);
-        layout->addWidget(imageLabel); // Add the image label to the layout
+        m_btn_open = new QPushButton("Open Image", this);
+        m_btn_save = new QPushButton("Save Processed Image", this);
+        m_info_label = new QLabel("Select an image to process", this);
+        m_pixel_density_label = new QLabel("", this);
+        m_image_label = new QLabel(this); // Label to display the image
+        m_image_label->setAlignment(Qt::AlignCenter);
 
-        connect(btnOpen, &QPushButton::clicked, this, &ImageProcessorGUI::openImage);
-        connect(btnSave, &QPushButton::clicked, this, &ImageProcessorGUI::saveImage);
+        l_layout->addWidget(m_btn_open);
+        l_layout->addWidget(m_info_label);
+        l_layout->addWidget(m_pixel_density_label);
+        l_layout->addWidget(m_image_label); // Add the image label to the layout
 
-        layout->addWidget(btnSave);
+        connect(m_btn_open, &QPushButton::clicked, this, &ImageProcessorGUI::openImage);
+        connect(m_btn_save, &QPushButton::clicked, this, &ImageProcessorGUI::saveImage);
+
+        l_layout->addWidget(m_btn_save);
 
         disableButtons();  // Initially disable transformation buttons until an image is loaded
     }
 
 private:
-    QLabel *infoLabel;
-    QLabel *pixelDensityLabel;
-    QLabel *imageLabel;    // Pointer to the label for displaying images
-    QPushButton *btnSave;  // Button to save the processed image
-    QPushButton *btnOpen;  // Button to open the image
-    QString imagePath;
-
-    ImageProcessor *imgProcessor;
-    std::vector<QPushButton*> transformationBtnList;
+    QLabel *m_info_label;
+    QLabel *m_pixel_density_label;
+    QLabel *m_image_label;    // Pointer to the label for displaying images
+    QPushButton *m_btn_save;  // Button to save the processed image
+    QPushButton *m_btn_open;  // Button to open the image
+    QString m_image_path;
+    ImageProcessor *m_img_processor;
+    std::vector<QPushButton*> m_transformation_btn_list;
 
     void openImage() {
-        imagePath = QFileDialog::getOpenFileName(this, "Open Image", "", "Images (*.png *.jpg *.jpeg)");
+        m_image_path = QFileDialog::getOpenFileName(this, "Open Image", "", "Images (*.png *.jpg *.jpeg)");
 
-        if (!imagePath.isEmpty()) {
-            imgProcessor = new ImageProcessor(imagePath.toStdString());
-            QPixmap pixmap(imagePath);
-            imageLabel->setPixmap(pixmap.scaled(imageLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
-            infoLabel->setText("Image loaded: " + imagePath);
-            pixelDensityLabel->setText(QString("Pixel Density %1").arg(imgProcessor->get_average_pixel_density()));
-
-
-
-
+        if (!m_image_path.isEmpty()) {
+            m_img_processor = new ImageProcessor(m_image_path.toStdString());
+            QPixmap l_pixmap(m_image_path);
+            m_image_label->setPixmap(l_pixmap.scaled(m_image_label->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+            m_info_label->setText("Image loaded: " + m_image_path);
+            m_pixel_density_label->setText(QString("Pixel Density %1").arg(m_img_processor->get_average_pixel_density()));
             // tried to make this extensible, create transformation buttons based on available transformations
             createTransformationButtons();
 
-            enableButtons();  
+            enableButtons();
         }
     }
 
-void createTransformationButtons() 
-{
-    const auto& transformations = imgProcessor->m_transformations_map;
-    QVBoxLayout *layout = static_cast<QVBoxLayout*>(this->layout());
+    void createTransformationButtons() {
+        const auto& l_transformations = m_img_processor->m_transformations_map;
+        QVBoxLayout *l_layout = static_cast<QVBoxLayout*>(this->layout());
 
-    // Clear existing transformation buttons
-    for (auto btn : transformationBtnList) 
-    {
-        layout->removeWidget(btn);
-        btn->deleteLater();
-    }
-    transformationBtnList.clear();
+        // Clear existing transformation buttons
+        for (auto l_btn : m_transformation_btn_list) {
+            l_layout->removeWidget(l_btn);
+            l_btn->deleteLater();
+        }
+        m_transformation_btn_list.clear();
 
-    if (transformations.find("reset_image") != transformations.end()) 
-    {
-        QPushButton *resetBtn = new QPushButton("reset_image", this);
-        layout->addWidget(resetBtn);
-        connect(resetBtn, &QPushButton::clicked, [this]() 
-        {
-            applyTransformation("reset_image");
-        });
-        transformationBtnList.push_back(resetBtn);
-    }
-
-    for (const auto &transformation : transformations) 
-    {
-        if (transformation.first == "reset_image") 
-        {
-            continue; // Skip, since we already added it
+        if (l_transformations.find("reset_image") != l_transformations.end()) {
+            QPushButton *l_reset_btn = new QPushButton("reset_image", this);
+            l_layout->addWidget(l_reset_btn);
+            connect(l_reset_btn, &QPushButton::clicked, [this]() {
+                applyTransformation("reset_image");
+            });
+            m_transformation_btn_list.push_back(l_reset_btn);
         }
 
-        QPushButton *btn = new QPushButton(QString::fromStdString(transformation.first), this);
-        layout->addWidget(btn);
-        connect(btn, &QPushButton::clicked, [this, transformation]() 
-        {
-            applyTransformation(transformation.first);
-            pixelDensityLabel->setText(QString("Pixel Density %1").arg(imgProcessor->get_average_pixel_density()));
-        });
-        transformationBtnList.push_back(btn);
-    }
-}
+        for (const auto &l_transformation : l_transformations) {
+            if (l_transformation.first == "reset_image") {
+                continue; // Skip, since we already added it
+            }
 
-    void applyTransformation(const std::string &transformation_name) 
-    {
-        if (imgProcessor) 
-        {
-            std::cout << "applying transformation: " << transformation_name << std::endl;
-            imgProcessor->apply_transformation(transformation_name);  // Apply the transformation
+            QPushButton *l_btn = new QPushButton(QString::fromStdString(l_transformation.first), this);
+            l_layout->addWidget(l_btn);
+            connect(l_btn, &QPushButton::clicked, [this, l_transformation]() {
+                applyTransformation(l_transformation.first);
+                m_pixel_density_label->setText(QString("Pixel Density %1").arg(m_img_processor->get_average_pixel_density()));
+            });
+            m_transformation_btn_list.push_back(l_btn);
+        }
+    }
+
+    void applyTransformation(const std::string &l_transformation_name) {
+        if (m_img_processor) {
+            std::cout << "applying transformation: " << l_transformation_name << std::endl;
+            m_img_processor->apply_transformation(l_transformation_name);  // Apply the transformation
             updateImageLabel();  // Update the displayed image
         }
     }
 
-       void updateImageLabel() 
-       {
-        if (imgProcessor) 
-        {
-            imgProcessor->write_image("./temp_output.jpg", "jpg");
-            QPixmap outputPixmap("./temp_output.jpg");
-            imageLabel->setPixmap(outputPixmap.scaled(imageLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    void updateImageLabel() {
+        if (m_img_processor) {
+            m_img_processor->write_image("./temp_output.jpg", "jpg");
+            QPixmap l_output_pixmap("./temp_output.jpg");
+            m_image_label->setPixmap(l_output_pixmap.scaled(m_image_label->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
         }
     }
 
-    void saveImage() 
-    {
-            if (imgProcessor) 
-            {
-                QString savePath = QFileDialog::getSaveFileName(this, "Save Processed Image", "", "Images (*.png *.jpg *.jpeg)");
-                if (!savePath.isEmpty()) 
-                {
-                    imgProcessor->write_image(savePath.toStdString(), "jpg");
-                    QMessageBox::information(this, "Success", "Image saved to: " + savePath);
-                }
+    void saveImage() {
+        if (m_img_processor) {
+            QString l_save_path = QFileDialog::getSaveFileName(this, "Save Processed Image", "", "Images (*.png *.jpg *.jpeg)");
+            if (!l_save_path.isEmpty()) {
+                m_img_processor->write_image(l_save_path.toStdString(), "jpg");
+                QMessageBox::information(this, "Success", "Image saved to: " + l_save_path);
             }
         }
-
-
-    void disableButtons() 
-    {
-        for (auto btn : transformationBtnList) 
-        {
-            btn->setEnabled(false);
-        }
-        btnSave->setEnabled(false);
     }
 
-    void enableButtons() 
-    {
-        for (auto btn : transformationBtnList) 
-        {
-            btn->setEnabled(true);
+    void disableButtons() {
+        for (auto l_btn : m_transformation_btn_list) {
+            l_btn->setEnabled(false);
         }
-        btnSave->setEnabled(true);
+        m_btn_save->setEnabled(false);
+    }
+
+    void enableButtons() {
+        for (auto l_btn : m_transformation_btn_list) {
+            l_btn->setEnabled(true);
+        }
+        m_btn_save->setEnabled(true);
     }
 };
 
-int main(int argc, char *argv[]) 
-{
-    QApplication app(argc, argv);
-    ImageProcessorGUI window;
-    window.setWindowTitle("Surescan ImageProcessor Library GUI");
-    window.setFixedSize(600, 400);  
-    window.show();
-    return app.exec();
+int main(int argc, char *argv[]) {
+    QApplication l_app(argc, argv);
+    ImageProcessorGUI l_window;
+    l_window.setWindowTitle("Surescan ImageProcessor Library GUI");
+    l_window.setFixedSize(600, 400);
+
+    l_window.show();
+    return l_app.exec();
 }
