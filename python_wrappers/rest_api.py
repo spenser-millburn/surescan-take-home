@@ -13,9 +13,10 @@ import uuid
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
+# Initialize api
 app = FastAPI()
 
-# Define fixed directories for inputs and outputs
+# Define fixed temp directories for inputs and outputs
 UPLOAD_DIR = os.path.abspath("/tmp/uploads")
 PROCESSED_DIR = os.path.abspath("/tmp/processed")
 
@@ -56,14 +57,13 @@ def transform_and_package_images(transformation_types: List[str], input_dir: str
 
 @app.get("/transformations")
 async def get_transformations():
+    """Gets a list of available transformations from the surescan image processing library"""
     return TRANSFORMATION_ALGORITHMS
 
 
 @app.post("/process_images")
-async def process_images(
-    transformation_types: List[str], 
-    file: UploadFile = File(...)
-):
+async def process_images( transformation_types: List[str],  file: UploadFile = File(...)):
+    """Processes a tarball of images into the transformed output, and returns a tarball with all images transformed. """
     try:
         input_dir, output_dir, unique_id = create_unique_dirs()
 
@@ -92,14 +92,11 @@ async def process_images(
 
 
 @app.post("/process_single_image")
-async def process_single_image(
-    transformation_types: List[str],
-    file: UploadFile = File(...)
-):
+async def process_single_image(transformation_types: List[str],file: UploadFile = File(...)):
+    """Processes a single images into the transformed output, and returns a the transformed image"""
     try:
         input_dir, output_dir, unique_id = create_unique_dirs()
 
-        # Save the uploaded image
         input_image_path = os.path.join(input_dir, file.filename)
         save_uploaded_file(file, input_image_path)
 
@@ -107,7 +104,6 @@ async def process_single_image(
         if not input_image_path.lower().endswith(VALID_IMAGE_EXTENSIONS):
             raise HTTPException(status_code=400, detail="Invalid image file format.")
 
-        # Perform image transformations
         transform_images(
             transformation_types=transformation_types,
             input_dir=input_dir,
