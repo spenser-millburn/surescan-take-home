@@ -10,12 +10,16 @@ This project is a takehome assignment for SureScan. The purpose of the app is to
 - **Clients**: Desktop, CLI, and web (via rest API) clients wrap the library and are built and run as Docker Compose services.
 
 ### UML
-#### System Architecture 
-![](./docs/assets/Architecture.svg)
+#### System Architecture
+<div align="center">
+<img src="./docs/assets/Architecture.svg">
+</div>
 
 #### ImageProcessor Class
+<div align="center">
+<img src="./docs/assets/ImageProcessor.svg">
+</div>
 
-![](./docs/assets/ImageProcessor.svg)
 - By adopting this architecture, clients dynamically inherit new features from the C++ library without needing code updates.
 
 ## Usage
@@ -24,8 +28,8 @@ This project is a takehome assignment for SureScan. The purpose of the app is to
 - Ensure Docker Compose is installed.
 - The desktop client uses X Forwarding, so you may need to run `xhost +`.
 
-```
-docker compose up --build
+``` 
+docker compose up --build 
 ```
 
 ### Launching and Using Individual Services
