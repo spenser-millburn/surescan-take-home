@@ -15,6 +15,7 @@ TRANSFORMATION_ALGORITHMS = surescan_processor.get_transformations()
 def transform(image_path: Path, output_dir: Path, transformation_types: List[str]):
     """Transforms a single image with a sequence of transformations applied to the same image."""
     src = image_path.as_posix()
+    logger.warning(src)
     name, ext = os.path.splitext(image_path.name)
     dest = (output_dir / f"{name}_{'_'.join(transformation_types)}{ext}").resolve().as_posix()
     logger.info(f"Transforming {image_path} with transformations {transformation_types} to {dest}")
