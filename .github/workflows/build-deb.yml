@@ -43,23 +43,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v1.0.0
-          release_name: Release v1.0.0
+          tag_name: v1.${{ github.event.release.created_at | date('YYYYMMDDHHmm') }}
+          release_name: Release v1.${{ github.event.release.created_at | date('YYYYMMDDHHmm') }}
           draft: false
           prerelease: false
-
-      # Upload each .deb file as a release asset
-      - name: Upload Release Assets
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          for file in ./output/*.deb; do
-            if [ -f "$file" ]; then
-              echo "Uploading $file..."
-              curl -X POST \
-                -H "Authorization: token $GITHUB_TOKEN" \
-                -H "Content-Type: application/x-debian-package" \
-                --data-binary @"$file" \
-                "${{ steps.create_release.outputs.upload_url }}?name=$(basename $file)"
-            fi
-          done
