@@ -1,0 +1,1 @@
+[   {     "unit_tests.cpp": "Modify the code to ensure that the executable takes one argument, which is the path to the test image. This may involve updating the main function to accept command-line arguments and adjusting any relevant logic to handle the image path appropriately."   } ]
