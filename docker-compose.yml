@@ -17,7 +17,7 @@ services:
     volumes:
       - ./output:/app/python_wrappers/output
     working_dir: /app
-    command: ["python3", "python_wrappers/cli_interface.py", "--input-dir", "/app/images", "--transformation", "flip_x_axis","--transformation","grayscale","--output-dir", "./python_wrappers/output"]
+    command: ["python3", "python_wrappers/cli.py", "--input-dir", "/app/images", "--transformation", "flip_x_axis","--transformation","grayscale","--output-dir", "./python_wrappers/output"]
 
   python_rest_api:
     build:
