@@ -14,7 +14,7 @@ This project is a takehome assignment for SureScan. The purpose of the app is to
 <table align="center">
   <tr>
     <td><img src="./docs/assets/Architecture.svg"></td>
-    <td><img src="./docs/assets/ImageProcessor.svg"></td>
+    <td><img src="./docs/assets/ImageProcessorV2.svg"></td>
   </tr>
 </table>
 
