@@ -9,6 +9,9 @@ This project is a takehome assignment for SureScan. The purpose of the app is to
 - **APIs**: The core c++ [eigen/opencv] based library Exposed to both Python and C++ bindings.
 - **Clients**: Desktop, CLI, and web (via rest API) clients wrap the library and are built and run as Docker Compose services.
 
+### UML
+<img src="path/to/your/image.svg" alt="Description of the image">
+
 ## Usage
 
 ### Quickstart - Launch ALL Clients

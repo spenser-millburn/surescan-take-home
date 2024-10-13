@@ -1,0 +1,26 @@
+@startuml
+class Processor {
+  +cv2eigen(src, dst)
+  +eigen2cv(src, dst)
+}
+
+class ImageProcessor {
+  -std::string m_raw_image_path
+  -cv::Mat m_raw_image
+  -Eigen::Matrix m_eigen_image
+  +ImageProcessor(image_path)
+  +read_image(image_path)
+  +reset_image()
+  +get_average_pixel_density() : double
+  +flip_x()
+  +flip_y()
+  +rotate_left()
+  +rotate_right()
+  +grayscale()
+  +flipped_grayscale(output_path) : int
+  +get_image() : pybind11::array_t
+  +write_image(output_path, format)
+}
+
+Processor <|-- ImageProcessor
+@enduml

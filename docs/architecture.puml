@@ -1,0 +1,27 @@
+@startuml
+skinparam monochrome true
+
+package "SureScan Takehome Project" {
+    package "Clients" {
+        [Web Client]
+        [Desktop Client]
+        [Python Typer TUI Client]
+    }
+
+    package "APIs" {
+        [pybind11 bindings]
+        [REST API]
+        [C++ Module]
+    }
+
+    [surescan_image_transformers Library]
+}
+
+[Web Client] --> [REST API]
+[Desktop Client] --> [C++ Module]
+[Python Typer TUI Client] --> [pybind11 bindings]
+
+[pybind11 bindings] --> [surescan_image_transformers Library]
+[REST API] --> [surescan_image_transformers Library]
+[C++ Module] --> [surescan_image_transformers Library]
+@enduml
