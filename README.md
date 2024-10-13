@@ -10,7 +10,7 @@ This project is a takehome assignment for SureScan. The purpose of the app is to
 - **Clients**: Desktop, CLI, and web (via rest API) clients wrap the library and are built and run as Docker Compose services.
 
 ### UML
-#### System Architecture
+#### System Design
 <table align="center">
   <tr>
     <td><img src="./docs/assets/Architecture.svg"></td>
@@ -18,7 +18,7 @@ This project is a takehome assignment for SureScan. The purpose of the app is to
   </tr>
 </table>
 
-- By adopting this architecture, clients dynamically inherit new features from the C++ library without needing code updates.
+- By adopting this pattern, clients dynamically inherit new features from the C++ library without needing code updates.
 
 ## Usage
 
