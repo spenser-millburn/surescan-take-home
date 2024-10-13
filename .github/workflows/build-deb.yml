@@ -1,4 +1,4 @@
-name: Build, Push, and Release Debian Package
+name: Build, Test, and Release Debian Artifacts
 
 on:
   push:
