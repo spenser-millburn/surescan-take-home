@@ -10,7 +10,9 @@ This project is a takehome assignment for SureScan. The purpose of the app is to
 - **Clients**: Desktop, CLI, and web (via rest API) clients wrap the library and are built and run as Docker Compose services.
 
 ### UML
+```html
 <img src=./docs/assets/Architecture.svg" alt="Description of the image">
+```
 
 ## Usage
 
@@ -18,7 +20,7 @@ This project is a takehome assignment for SureScan. The purpose of the app is to
 - Ensure Docker Compose is installed.
 - The desktop client uses X Forwarding, so you may need to run `xhost +`.
 
-```shell
+```
 docker compose up --build
 ```
 
