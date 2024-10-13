@@ -9,18 +9,11 @@
 #include <map>
 #include <functional>
 
-class BaseProcessor {
-public:
-    virtual ~BaseProcessor() = default;
-    virtual void read(const std::string &path) = 0;
-    virtual void write(const std::string &output_path, const std::string &format) = 0;
-};
-
-class Processor : public BaseProcessor {
+class Processor {
 public:
     virtual ~Processor() = default;
-
-protected:
+    virtual void read(const std::string &path) = 0;
+    virtual void write(const std::string &output_path, const std::string &format) = 0;
 };
 
 class ImageProcessor : public Processor {
