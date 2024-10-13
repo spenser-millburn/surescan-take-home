@@ -35,15 +35,3 @@ jobs:
         with:
           name: debian-package
           path: ./output/*.deb
-
-      # Create a release
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: v1.${{ github.event.release.created_at | date('YYYYMMDDHHmm') }}
-          release_name: Release v1.${{ github.event.release.created_at | date('YYYYMMDDHHmm') }}
-          draft: false
-          prerelease: false
