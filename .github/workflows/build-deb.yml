@@ -54,6 +54,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./output/*.deb
+          asset_path: ${{ github.workspace }}/output/*.deb
           asset_name: package.deb
           asset_content_type: application/x-debian-package
+
+
+# Run actions/upload-release-asset@v1
+# Error: ENOENT: no such file or directory, stat './output/*.deb'
