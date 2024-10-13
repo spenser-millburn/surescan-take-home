@@ -25,6 +25,7 @@ This project is a takehome assignment for SureScan. The purpose of the app is to
 ### Quickstart - Launch ALL Clients
 - Ensure Docker Compose is installed.
 - The desktop client uses X Forwarding, so you may need to run `xhost +`.
+- Ensure that ports `8000` and `3000` are open and not blocked/binded to by other applications. 
 
 ```
 docker compose up --build
