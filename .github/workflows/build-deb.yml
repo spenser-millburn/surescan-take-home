@@ -58,6 +58,3 @@ jobs:
           asset_name: package.deb
           asset_content_type: application/x-debian-package
 
-
-# Run actions/upload-release-asset@v1
-# Error: ENOENT: no such file or directory, stat './output/*.deb'
