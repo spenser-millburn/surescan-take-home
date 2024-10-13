@@ -11,14 +11,12 @@ This project is a takehome assignment for SureScan. The purpose of the app is to
 
 ### UML
 #### System Architecture
-<div align="center">
-<img src="./docs/assets/Architecture.svg">
-</div>
-
-#### ImageProcessor Class
-<div align="center">
-<img src="./docs/assets/ImageProcessor.svg">
-</div>
+<table align="center">
+  <tr>
+    <td><img src="./docs/assets/Architecture.svg"></td>
+    <td><img src="./docs/assets/ImageProcessor.svg"></td>
+  </tr>
+</table>
 
 - By adopting this architecture, clients dynamically inherit new features from the C++ library without needing code updates.
 
@@ -28,15 +26,14 @@ This project is a takehome assignment for SureScan. The purpose of the app is to
 - Ensure Docker Compose is installed.
 - The desktop client uses X Forwarding, so you may need to run `xhost +`.
 
-``` 
-docker compose up --build 
+```
+docker compose up --build
 ```
 
 ### Launching and Using Individual Services
 - **DESKTOP C++ QT5 GUI**:
   - Should pop up on the screen. Select an image and follow the on-screen prompts.
   - Command: `docker compose run -it qt_gui_wrapper`
-
 - **Python Terminal UI**:
   - Automatically processes images placed in the specified input directory, applying the defined transformations and saving the results to the output directory.
   - Command:
@@ -44,10 +41,8 @@ docker compose up --build
     docker compose run -it python_tui bash -c "python3 /app/python_wrappers/cli.py --input-dir ./images/ --transformation flip_x_axis --transformation grayscale --output-dir ./output"
     ```
   - The transformed images appear in the `./output` directory on the host.
-
 - **Typescript React Web GUI**:
   - Browse to [http://localhost:3000](http://localhost:3000) and follow on-screen prompts. You may either upload a single image or a tarball of images.
-
 - **REST API**:
   - See RESTful API documentation at [http://localhost:8000/docs](http://localhost:8000/docs).
 
