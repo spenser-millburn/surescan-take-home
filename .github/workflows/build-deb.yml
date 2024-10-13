@@ -27,7 +27,7 @@ jobs:
 
       # Run the Docker container to build the Debian package
       - name: Build Debian Package
-        run: docker run --rm -v ${{ github.workspace }}/output:/output surescan_image
+        run: docker run --rm -v ${{ github.workspace }}/output:/out surescan_image sh -c "cp /output/* /out"  
 
       # Upload the .deb package as an artifact
       - name: Upload Debian Package
