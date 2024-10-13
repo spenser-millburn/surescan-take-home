@@ -6,12 +6,12 @@ This project is a takehome assignment for SureScan. The purpose of the app is to
 ## Architecture
 
 - **Core Transformation Logic**: Implemented as a C++ library. Debian package artifacts are published via CI for installation.
-- **APIs**: Exposed to both Python and C++ bindings.
+- **APIs**: The core c++ [eigen/opencv] based library Exposed to both Python and C++ bindings.
 - **Clients**: Desktop, CLI, and web (via rest API) clients wrap the library and are built and run as Docker Compose services.
 
 ## Usage
 
-### Quickstart - Launch the Clients
+### Quickstart - Launch ALL Clients
 - Ensure Docker Compose is installed.
 - The desktop client uses X Forwarding, so you may need to run `xhost +`.
 
