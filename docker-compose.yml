@@ -11,7 +11,7 @@ services:
     working_dir: /app/images/
     command: ["ImageProcessorGUI"] 
 
-  python_wrappers:
+  python_tui:
     build:
       context: .
     volumes:
