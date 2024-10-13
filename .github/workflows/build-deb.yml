@@ -17,7 +17,7 @@ jobs:
       - name: git checkout code
         uses: actions/checkout@v3
 
-      # Set up Docker Buildx (for multi-platform builds, if needed)
+      # Set up Docker Buildx 
       - name: Set up the docker buildx environment
         uses: docker/setup-buildx-action@v2
 
@@ -32,14 +32,19 @@ jobs:
         run: docker run --rm -v ${{ github.workspace }}/output:/output surescan_image bash -c "export GTEST_OUTPUT='xml:/output/transformer_lib_test_results.xml';/app/cpp_image_transformers_library/transformer_library/build/unit_tests /app/images/sunflower.jpg;ls /output;"
 
       # upload test results as an artifact
-      - name: upload test results for transformer library and python wrapper
+      - name: upload test results for transformer library 
         if: always()
         uses: actions/upload-artifact@v3
         with:
-          name: test-results
-          path: |
-            ./output/transformer_lib_test_results.xml
-            ./output/python_wrapper_test_result.txt
+          name: cpp-googletest-results
+          path: ./output/transformer_lib_test_results.xml
+
+      - name: upload test results for python wrapper
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: python-pytest-results
+          path: ./output/python_wrapper_test_result.txt
 
       # save the debs
       - name: capture debs to ci environment 
