@@ -26,7 +26,7 @@ jobs:
         run: docker build -t surescan_image .
 #
       - name: Run Python unit tests in Docker
-        run: docker run --rm ${{ github.workspace }}/output:/output surescan_image bash -c "pip install pytest && pytest ./python_wrappers/unit_tests.py > /output/python_wrapper_test_result.txt"
+        run: docker run --rm surescan_image bash -c "pip install pytest && pytest -v --log-cli-level=INFO /app/python_wrappers/unit_tests.py > /output/python_wrapper_test_result.txt;ls /output; cat /output/python_wrapper_test_result.txt"
 
       - name: Run C++ googletests
         run: docker run --rm -v ${{ github.workspace }}/output:/output surescan_image bash -c "export GTEST_OUTPUT='xml:/output/transformer_lib_test_results.xml';/app/cpp_image_transformers_library/transformer_library/build/unit_tests /app/images/sunflower.jpg;ls /output;"
@@ -37,7 +37,9 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: test-results
-          path: ./output/transformer_lib_test_results.xml
+          path: |
+            ./output/transformer_lib_test_results.xml
+            ./output/python_wrapper_test_result.txt
 
       # save the debs
       - name: Build Debian Package
