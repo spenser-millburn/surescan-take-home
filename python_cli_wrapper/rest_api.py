@@ -24,7 +24,7 @@ os.makedirs(UPLOAD_DIR, exist_ok=True)
 os.makedirs(PROCESSED_DIR, exist_ok=True)
 
 # List of valid image extensions
-VALID_IMAGE_EXTENSIONS = ('.jpg', '.jpeg', '.png', '.bmp', '.gif', '.tiff', '.webp')
+VALID_IMAGE_EXTENSIONS = ('.jpg', '.jpeg', '.png')
 
 def create_unique_dirs():
     """Creates unique input/output directories based on UUID."""
@@ -119,11 +119,7 @@ async def process_single_image(
         logger.info(f"Processing complete for single image: {output_image_path}, sending back to client.")
 
         # Return the transformed image
-        return FileResponse(
-            path=output_image_path,
-            filename=output_image_path.name,
-            media_type="image/jpeg"
-        )
+        return FileResponse(output_image_path)
 
     except Exception as e:
         logger.error(f"Error processing single image: {str(e)}")
