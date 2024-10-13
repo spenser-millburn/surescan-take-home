@@ -8,7 +8,7 @@ RUN apt-get install -y llvm qt5-default python3-pybind11
 RUN apt-get install -y libgtest-dev
 
 # RUN rm -rf /var/lib/apt/lists/*
-RUN pip3 install typer fastapi codetiming pybind11 python-multipart uvicorn
+RUN pip3 install typer fastapi codetiming pybind11 python-multipart uvicorn pytest
 
 
 

@@ -25,8 +25,8 @@ jobs:
       - name: Build Docker image
         run: docker build -t surescan_image .
 #
-      # - name: Run Python unit tests in Docker
-        # run: docker run --rm surescan_image bash -c "pip install pytest && pytest ./python_wrappers/unit_tests.py"
+      - name: Run Python unit tests in Docker
+        run: docker run --rm ${{ github.workspace }}/output:/output surescan_image bash -c "pip install pytest && pytest ./python_wrappers/unit_tests.py > /output/python_wrapper_test_result.txt"
 
       - name: Run C++ googletests
         run: docker run --rm -v ${{ github.workspace }}/output:/output surescan_image bash -c "export GTEST_OUTPUT='xml:/output/transformer_lib_test_results.xml';/app/cpp_image_transformers_library/transformer_library/build/unit_tests /app/images/sunflower.jpg;ls /output;"
