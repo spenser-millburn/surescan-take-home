@@ -7,6 +7,7 @@ PYBIND11_MODULE(_core, m) {
         .def(pybind11::init<const std::string &>())
         .def(pybind11::init<>())
         .def("reset_image", &ImageProcessor::reset_image, "Reset the image to its original format :wq")
+        .def("get_average_pixel_density", &ImageProcessor::get_average_pixel_density, "get the average pixel density of the image")
         .def("flipped_grayscale", &ImageProcessor::flipped_grayscale, "A function that transforms (flips) an image and saves it to the output path.")
         .def("flip_x", &ImageProcessor::flip_x, "Flip image along x-axis.")
         .def("flip_y", &ImageProcessor::flip_y, "Flip image along y-axis.")
@@ -24,7 +25,7 @@ PYBIND11_MODULE(_core, m) {
         Pybind11 example plugin
         -----------------------
 
-        .. currentmodule:: scikit_build_example
+        .. currentmodule:: transformer librayr 
 
         .. autosummary::
            :toctree: _generate

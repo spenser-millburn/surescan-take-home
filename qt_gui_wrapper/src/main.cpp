@@ -18,11 +18,13 @@ public:
         btnOpen = new QPushButton("Open Image", this);
         btnSave = new QPushButton("Save Processed Image", this);
         infoLabel = new QLabel("Select an image to process", this);
+        pixelDensityLabel= new QLabel("Select an image to process", this);
         imageLabel = new QLabel(this); // Label to display the image
         imageLabel->setAlignment(Qt::AlignCenter);
         
         layout->addWidget(btnOpen);
         layout->addWidget(infoLabel);
+        layout->addWidget(pixelDensityLabel);
         layout->addWidget(imageLabel); // Add the image label to the layout
 
         connect(btnOpen, &QPushButton::clicked, this, &ImageProcessorGUI::openImage);
@@ -35,6 +37,7 @@ public:
 
 private:
     QLabel *infoLabel;
+    QLabel *pixelDensityLabel;
     QLabel *imageLabel;    // Pointer to the label for displaying images
     QPushButton *btnSave;  // Button to save the processed image
     QPushButton *btnOpen;  // Button to open the image
@@ -47,11 +50,14 @@ private:
         imagePath = QFileDialog::getOpenFileName(this, "Open Image", "", "Images (*.png *.jpg *.jpeg)");
 
         if (!imagePath.isEmpty()) {
+            imgProcessor = new ImageProcessor(imagePath.toStdString());
             QPixmap pixmap(imagePath);
             imageLabel->setPixmap(pixmap.scaled(imageLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
             infoLabel->setText("Image loaded: " + imagePath);
+            pixelDensityLabel->setText(QString("Pixel Density %1").arg(imgProcessor->get_average_pixel_density()));
 
-            imgProcessor = new ImageProcessor(imagePath.toStdString());
+
+
 
             // tried to make this extensible, create transformation buttons based on available transformations
             createTransformationButtons();
@@ -96,6 +102,7 @@ void createTransformationButtons()
         connect(btn, &QPushButton::clicked, [this, transformation]() 
         {
             applyTransformation(transformation.first);
+            pixelDensityLabel->setText(QString("Pixel Density %1").arg(imgProcessor->get_average_pixel_density()));
         });
         transformationBtnList.push_back(btn);
     }

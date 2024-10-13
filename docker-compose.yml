@@ -8,21 +8,21 @@ services:
       - DISPLAY=${DISPLAY}
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
-    working_dir: /app/python_cli_wrapper/images/
-    command: ["../../qt_gui_wrapper/build/ImageProcessorGUI"] 
+    working_dir: /app/images/
+    command: ["ImageProcessorGUI"] 
 
-  python_cli_wrapper:
+  python_wrappers:
     build:
       context: .
     volumes:
-      - ./output:/app/python_cli_wrapper/output
+      - ./output:/app/python_wrappers/output
     working_dir: /app
-    command: ["python3", "python_cli_wrapper/cli_interface.py", "--input-dir", "python_cli_wrapper/images/", "--transformation", "flip_x_axis","--transformation","grayscale","--output-dir", "./python_cli_wrapper/output"]
+    command: ["python3", "python_wrappers/cli_interface.py", "--input-dir", "/app/images", "--transformation", "flip_x_axis","--transformation","grayscale","--output-dir", "./python_wrappers/output"]
 
-  rest_api:
+  python_rest_api:
     build:
       context: .
-    working_dir: /app/python_cli_wrapper
+    working_dir: /app/python_wrappers
     ports:
       - 8000:8000
     command: ["python3", "rest_api.py"]

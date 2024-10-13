@@ -27,6 +27,7 @@ class ImageProcessor : public Processor
 public:
     ImageProcessor(const std::string &image_path);
     ImageProcessor(){};
+    double get_average_pixel_density();
     void reset_image();
     void flip_x();
     void flip_y();

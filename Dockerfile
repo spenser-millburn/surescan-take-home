@@ -8,6 +8,8 @@ RUN apt-get install -y llvm qt5-default python3-pybind11
 # RUN rm -rf /var/lib/apt/lists/*
 RUN pip3 install typer fastapi codetiming pybind11 python-multipart uvicorn
 
+
+
 #Transformations Library - Python API install
 WORKDIR /app
 COPY ./cpp_image_transformers_library ./cpp_image_transformers_library
@@ -23,13 +25,14 @@ RUN rm -rf build && mkdir -p build && cd build && cmake .. && make install
 WORKDIR /app
 COPY ./qt_gui_wrapper ./qt_gui_wrapper
 WORKDIR /app/qt_gui_wrapper
-RUN rm -rf build && mkdir -p build && cd build && cmake .. && make 
+RUN rm -rf build && mkdir -p build && cd build && cmake .. && make install
 WORKDIR /app/cpp_image_transformers_library
 
 #Typer CLI Wrapper
 WORKDIR /app
-COPY ./python_cli_wrapper ./python_cli_wrapper
-WORKDIR /app/python_cli_wrapper
+COPY ./python_wrappers ./python_wrappers
+COPY ./images ./images
+WORKDIR /app/python_wrappers
 CMD ["python3", "main.py", "--input-dir", "./images/", "--transformation", "flip_x_axis", "--output-dir", "./output"]
 # CMD ["bash"]
 

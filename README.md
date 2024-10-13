@@ -11,7 +11,7 @@ This project is a takehome assignment for SureScan. The purpose of the app is to
 - **CLI**: The CLI interface will automatically process images placed in the specified input directory, applying the defined transformations and saving the results to a specified output directory.
 
 ```
-[N] ~/e/r/s/s/python_cli_wrapper ❯❯❯ docker-compose run --rm python_cli_wrapper python3 python_cli_wrapper/main.py  --help
+[N] ~/e/r/s/s/python_wrappers ❯❯❯ docker-compose run --rm python_wrappers python3 python_wrappers/main.py  --help
                                                                                                                                                                      
  Usage: main.py [OPTIONS]              
                                                                                                                                                                      
@@ -41,7 +41,7 @@ To run the project, ensure you have Docker and Docker Compose installed on your 
   - ***Bonus:*** I have included a few other types of transformations, see the --help option of the cli for details. 
 
 ```
-docker-compose run --rm python_cli_wrapper python3 python_cli_wrapper/main.py --input-dir python_cli_wrapper/images/ --transformation-type flipped_grayscale --output-dir ./python_cli_wrapper/output
+docker-compose run --rm python_wrappers python3 python_wrappers/main.py --input-dir python_wrappers/images/ --transformation-type flipped_grayscale --output-dir ./python_wrappers/output
 ```
 The transformed images appear in the output directory.
 

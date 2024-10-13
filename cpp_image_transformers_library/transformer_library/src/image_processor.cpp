@@ -37,6 +37,57 @@ void ImageProcessor::reset_image()
     }
 }
 
+double ImageProcessor::get_average_pixel_density() 
+{
+    if (m_raw_image.empty()) 
+    {
+        std::cerr << "Image is empty." << std::endl;
+        return 0.0;
+    }
+
+    int l_numPixels = m_raw_image.rows * m_raw_image.cols;
+    double l_sum = 0.0;
+
+    // Convert the image to Eigen for grayscale or color images
+    Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> l_eigen_image;
+    if (m_raw_image.channels() == 1) 
+    {
+        // Convert single-channel (grayscale) image to Eigen
+        cv2eigen(m_raw_image, l_eigen_image);
+        for (int l_i = 0; l_i < l_eigen_image.rows(); ++l_i) 
+        {
+            for (int l_j = 0; l_j < l_eigen_image.cols(); ++l_j) 
+            {
+                l_sum += l_eigen_image(l_i, l_j);
+            }
+        }
+    } 
+    else if (m_raw_image.channels() == 3) 
+    {
+        // Convert multi-channel (color) image to Eigen by processing each channel separately
+        cv::Mat l_channels[3];
+        cv::split(m_raw_image, l_channels);  // Split BGR channels
+        
+        Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> l_eigen_b, l_eigen_g, l_eigen_r;
+        
+        // Convert each channel separately to Eigen
+        cv2eigen(l_channels[0], l_eigen_b);  // Blue channel
+        cv2eigen(l_channels[1], l_eigen_g);  // Green channel
+        cv2eigen(l_channels[2], l_eigen_r);  // Red channel
+
+        // Sum the average of BGR for each pixel
+        for (int l_i = 0; l_i < l_eigen_b.rows(); ++l_i) 
+        {
+            for (int l_j = 0; l_j < l_eigen_b.cols(); ++l_j) 
+            {
+                l_sum += (l_eigen_b(l_i, l_j) + l_eigen_g(l_i, l_j) + l_eigen_r(l_i, l_j)) / 3.0;
+            }
+        }
+    }
+
+    return l_sum / l_numPixels;
+    return 0.0;
+}
 void ImageProcessor::flip_x()
 {
     cv::flip(m_raw_image, m_raw_image, 0); // Flip around x-axis
