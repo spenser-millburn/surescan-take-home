@@ -13,6 +13,8 @@ This project is a takehome assignment for SureScan. The purpose of the app is to
 ![](./docs/assets/Architecture.svg)
 ![](./docs/assets/ImageProcessor.svg)
 
+- By adopting this architecture, clients dynamically inherit new features from the C++ library without needing code updates.
+
 ## Usage
 
 ### Quickstart - Launch ALL Clients
