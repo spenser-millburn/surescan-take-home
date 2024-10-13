@@ -9,7 +9,7 @@ class ImageProcessor {
   -cv::Mat m_raw_image
   -Eigen::Matrix m_eigen_image
   +ImageProcessor(image_path)
-  +read_image(image_path)
+  +read(image_path)
   +reset_image()
   +get_average_pixel_density() : double
   +flip_x()
@@ -19,7 +19,7 @@ class ImageProcessor {
   +grayscale()
   +flipped_grayscale(output_path) : int
   +get_image() : pybind11::array_t
-  +write_image(output_path, format)
+  +write(output_path, format)
 }
 
 Processor <|-- ImageProcessor

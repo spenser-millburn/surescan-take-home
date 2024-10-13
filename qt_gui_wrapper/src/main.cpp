@@ -118,7 +118,7 @@ private:
     {
         if (m_img_processor)
         {
-            m_img_processor->write_image("./temp_output.jpg", "jpg");
+            m_img_processor->write("./temp_output.jpg", "jpg");
             QPixmap l_output_pixmap("./temp_output.jpg");
             m_image_label->setPixmap(l_output_pixmap.scaled(m_image_label->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
         }
@@ -131,7 +131,7 @@ private:
             QString l_save_path = QFileDialog::getSaveFileName(this, "Save Processed Image", "", "Images (*.png *.jpg *.jpeg)");
             if (!l_save_path.isEmpty())
             {
-                m_img_processor->write_image(l_save_path.toStdString(), "jpg");
+                m_img_processor->write(l_save_path.toStdString(), "jpg");
                 QMessageBox::information(this, "Success", "Image saved to: " + l_save_path);
             }
         }

@@ -15,7 +15,7 @@ class TestImageTransformer(unittest.TestCase):
         mock_processor = MockImageProcessor.return_value
         mock_processor.get_transformations.return_value = ['flip_x_axis', 'grayscale']
         mock_processor.apply_transformation.return_value = None
-        mock_processor.write_image.return_value = None
+        mock_processor.write.return_value = None
 
         transformation_types = ['flip_x_axis', 'grayscale']
         input_dir = Path('./test_images').resolve()
@@ -25,7 +25,7 @@ class TestImageTransformer(unittest.TestCase):
 
         mock_processor.apply_transformation.assert_any_call('flip_x_axis')
         mock_processor.apply_transformation.assert_any_call('grayscale')
-        mock_processor.write_image.assert_called()
+        mock_processor.write.assert_called()
 
     @patch('surescan_image_transformer_core_wrapper.glob.glob')
     def test_find_images(self, mock_glob):

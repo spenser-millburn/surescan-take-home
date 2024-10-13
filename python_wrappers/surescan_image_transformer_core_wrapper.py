@@ -32,7 +32,7 @@ def transform(image_path: Path, output_dir: Path, transformation_types: List[str
             logger.warning(f"Failed to apply transformation: {transformation_type}. Error: {e}")
 
     # Write image to destination
-    surescan_processor.write_image(dest, ext)
+    surescan_processor.write(dest, ext)
 
 def find_images(input_dir: str) -> List[Path]:
     """Globs image files in the input directory and returns a list of paths."""
