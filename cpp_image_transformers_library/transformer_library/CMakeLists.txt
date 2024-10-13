@@ -40,7 +40,7 @@ target_include_directories(image_processor_lib
 target_link_libraries(image_processor_lib PRIVATE ${OpenCV_LIBS} Eigen3::Eigen ${LLVM_LIBS} Python3::Python)
 
 # ---- Build the C++ executable ----
-add_executable(image_processor_demo src/example.cpp)
+add_executable(image_processor_demo src/demo.cpp)
 
 target_link_libraries(image_processor_demo PRIVATE image_processor_lib ${OpenCV_LIBS} Eigen3::Eigen ${LLVM_LIBS} Python3::Python)
 
@@ -55,10 +55,6 @@ target_include_directories(unit_tests
     $<INSTALL_INTERFACE:include/${PROJECT_NAME}>
 )
 target_link_libraries(unit_tests GTest::gtest GTest::gtest_main image_processor_lib ${OpenCV_LIBS} Eigen3::Eigen ${LLVM_LIBS} Python3::Python )
-
-# Add a test
-# add_test(NAME MyUnitTests COMMAND UnitTests)
-
 
 # Set output directories for binaries and libraries
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
@@ -93,7 +89,7 @@ write_basic_package_version_file(
   COMPATIBILITY AnyNewerVersion
 )
 
-# Export targets to be used by other CMake projects
+# Export targets
 export(EXPORT ImageProcessorTargets
   FILE "${CMAKE_CURRENT_BINARY_DIR}/ImageProcessorTargets.cmake"
   NAMESPACE ImageProcessor::
@@ -123,7 +119,7 @@ set(CPACK_DEBIAN_PACKAGE_DEPENDS "libopencv-dev, libeigen3-dev, python3-dev, pyb
 # Automatically add shared library dependencies
 set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
 
-# Generate a .deb package
+# Enable .deb package generation
 set(CPACK_GENERATOR "DEB")
 
 INCLUDE(CPack)
