@@ -7,6 +7,8 @@ project(ImageProcessor VERSION 1.0 LANGUAGES CXX)
 # Set the C++ standard
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
+set(GTEST_OUTPUT "xml:unit_test_results.xml")
+
 
 # ---- Set install prefix ----
 set(CMAKE_INSTALL_PREFIX "/")
@@ -39,7 +41,24 @@ target_link_libraries(image_processor_lib PRIVATE ${OpenCV_LIBS} Eigen3::Eigen $
 
 # ---- Build the C++ executable ----
 add_executable(image_processor_demo src/example.cpp)
+
 target_link_libraries(image_processor_demo PRIVATE image_processor_lib ${OpenCV_LIBS} Eigen3::Eigen ${LLVM_LIBS} Python3::Python)
+
+enable_testing()
+find_package(GTest REQUIRED)
+
+# Add the unit test executable
+add_executable(unit_tests test/unit_tests.cpp src/image_processor.cpp)
+target_include_directories(unit_tests
+  PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include/${PROJECT_NAME}>
+)
+target_link_libraries(unit_tests GTest::gtest GTest::gtest_main image_processor_lib ${OpenCV_LIBS} Eigen3::Eigen ${LLVM_LIBS} Python3::Python )
+
+# Add a test
+# add_test(NAME MyUnitTests COMMAND UnitTests)
+
 
 # Set output directories for binaries and libraries
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")

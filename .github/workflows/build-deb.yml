@@ -6,10 +6,8 @@ on:
       - master
   pull_request:
     branches:
-      - master
-
-jobs:
-  build-deb:
+      - master jobs:
+  build-test-deploy:
     runs-on: ubuntu-20.04
 
     steps:
@@ -24,6 +22,17 @@ jobs:
       # Build the Docker image
       - name: Build Docker image
         run: docker build -t surescan_image .
+
+      - name: Run C++ googletests 
+        run: docker run --rm surescan_image bash -c "export GTEST_OUTPUT='xml:/output/transformer_lib_test_results.xml';/app/cpp_image_transformers_library/transformer_library/build/unit_tests /app/images/sunflower.jpg;ls /output;"
+
+      # Optionally, upload test results as an artifact
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: /output/transformer_lib_test_results.xml
 
       # Run the Docker container to build the Debian package
       - name: Build Debian Package

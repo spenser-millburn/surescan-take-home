@@ -5,6 +5,8 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y build-essential python3 python3-pip 
 RUN apt-get install -y cmake libopencv-dev libeigen3-dev
 RUN apt-get install -y llvm qt5-default python3-pybind11
+RUN apt-get install -y libgtest-dev
+
 # RUN rm -rf /var/lib/apt/lists/*
 RUN pip3 install typer fastapi codetiming pybind11 python-multipart uvicorn
 
