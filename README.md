@@ -44,27 +44,5 @@ docker compose up --build
 - **REST API**:
   - See RESTful API documentation at [http://localhost:8000/docs](http://localhost:8000/docs).
 
-## Components
-
-1. **Qt GUI Application**:
-   - A desktop application built using Qt that allows users to browse and display images. It is designed to be simple and intuitive, providing basic image viewing capabilities.
-
-2. **Python Typer Application**:
-   - A command-line interface built with Typer that automates image processing tasks. It uses a C++ backend for performing image transformations such as flipping and converting images to grayscale.
-   ```shell
-   docker-compose run --rm python_wrappers python3 python_wrappers/main.py --input-dir python_wrappers/images/ --transformation-type flipped_grayscale --output-dir ./python_wrappers/output
-   ```
-   - The transformed images appear in the output directory.
-
-3. **C++ Backend**:
-   - Utilizes OpenCV and Eigen3 libraries to perform image transformations. The backend is exposed to Python via Pybind11.
-
-4. **Start the QT GUI**:
-   - Ensure you have X_FORWARDING set up.
-   ```shell
-   docker-compose up --build qt_gui
-   ```
-   - Follow the on-screen prompts.
-
 ## Additional Information
 - Built with love by Spenser Millburn.
