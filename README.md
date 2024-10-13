@@ -40,7 +40,9 @@ docker compose up --build
     ```shell
     docker compose run -it python_tui bash -c "python3 /app/python_wrappers/cli.py --input-dir ./images/ --transformation flip_x_axis --transformation grayscale --output-dir ./output"
     ```
-```Usage: cli.py [OPTIONS]                                                                                                                                  
+```[I] ~/e/r/surescan-take-home ❯❯❯ docker compose run -it python_tui bash -c "python3 /app/python_wrappers/cli.py --help"                          master ✭ ◼
+
+Usage: cli.py [OPTIONS]                                                                                                                                  
                                                                                                                                                            
 ╭─ Options ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
 │ *  --transformation            TEXT  Transformation(s) to apply, options are ['flip_x_axis', 'flip_y_axis', 'grayscale', 'reset_image', 'rotate_left',  │
