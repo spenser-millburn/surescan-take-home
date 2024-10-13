@@ -8,8 +8,8 @@ services:
       - DISPLAY=${DISPLAY}
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
-    working_dir: /app/qt_gui_wrapper/build
-    command: ["./ImageProcessorGUI"] 
+    working_dir: /app/python_cli_wrapper/images/
+    command: ["../../qt_gui_wrapper/build/ImageProcessorGUI"] 
 
   python_cli_wrapper:
     build:
@@ -32,7 +32,7 @@ services:
       context: typescript_web_ui 
       dockerfile: Dockerfile
     ports:
-      - "3200:3000"
+      - "3000:3000"
     environment:
       - REACT_APP_API_HOST=http://localhost:8000
 
