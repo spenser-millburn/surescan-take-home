@@ -55,7 +55,7 @@ TEST_F(ImageProcessorTest, GetAveragePixelDensity) {
 
 // Test for writing an image
 TEST_F(ImageProcessorTest, WriteImage) {
-    EXPECT_NO_THROW(imgProcessor->write_image("output.jpg", "jpg"));
+    EXPECT_NO_THROW(imgProcessor->write("output.jpg", "jpg"));
 }
 
 // Test for flipped grayscale function
