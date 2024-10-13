@@ -33,7 +33,10 @@ docker compose up --build
 ### Launching and Using Individual Services
 - **DESKTOP C++ QT5 GUI**:
   - Should pop up on the screen. Select an image and follow the on-screen prompts.
-  - Command: `docker compose run -it qt_gui_wrapper`
+  - Command: 
+    ```
+    docker compose run -it qt_gui_wrapper
+    ```
     <table align="center">
       <tr>
         <td><img src="./docs/assets/QT_GUI.png"></td>
