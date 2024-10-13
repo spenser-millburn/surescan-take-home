@@ -16,7 +16,7 @@ find_package(Python3 REQUIRED COMPONENTS Development)
 find_package(pybind11 CONFIG REQUIRED)
 
 # Include directories for dependencies
-include_directories(${LLVM_INCLUDE_DIRS} ${Python3_INCLUDE_DIRS})
+include_directories(${LLVM_INCLUDE_DIRS} ${Python3_INCLUDE_DIRS} ${pybind11_INCLUDE_DIRS} /usr/local/lib/python3.8/dist-packages/pybind11/include/pybind11/)
 
 message(STATUS "Building Image Processing Libs")
 
