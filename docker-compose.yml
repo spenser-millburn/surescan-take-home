@@ -17,6 +17,14 @@ services:
     volumes:
       - ./output:/app/python_cli_wrapper/output
     working_dir: /app
-    command: ["python3", "python_cli_wrapper/main.py", "--input-dir", "python_cli_wrapper/images/", "--transformation", "flip_x_axis","--transformation","grayscale","--output-dir", "./python_cli_wrapper/output"]
+    command: ["python3", "python_cli_wrapper/cli_interface.py", "--input-dir", "python_cli_wrapper/images/", "--transformation", "flip_x_axis","--transformation","grayscale","--output-dir", "./python_cli_wrapper/output"]
+
+  rest_api:
+    build:
+      context: .
+    working_dir: /app/python_cli_wrapper
+    ports:
+      - 8000:8000
+    command: ["python3", "rest_api.py"]
 
 

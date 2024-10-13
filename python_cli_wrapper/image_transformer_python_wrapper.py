@@ -11,7 +11,6 @@ logger = logging.getLogger(__name__)
 surescan_processor = ImageProcessor()
 
 TRANSFORMATION_ALGORITHMS = surescan_processor.get_transformations()
-
 def transform(image_path: Path, output_dir: Path, transformation_types: List[str]):
     """Transforms a single image with a sequence of transformations applied to the same image."""
     src = image_path.as_posix()

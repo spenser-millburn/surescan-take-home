@@ -1,8 +1,9 @@
+import glob
 import tarfile
 import shutil
 from fastapi import FastAPI, HTTPException, UploadFile, File
 from typing import List
-from image_transformer_python_wrapper import transform_images
+from image_transformer_python_wrapper import transform_images,find_images,  TRANSFORMATION_ALGORITHMS
 from fastapi.responses import FileResponse
 import os
 import logging
@@ -25,8 +26,38 @@ os.makedirs(PROCESSED_DIR, exist_ok=True)
 # List of valid image extensions
 VALID_IMAGE_EXTENSIONS = ('.jpg', '.jpeg', '.png', '.bmp', '.gif', '.tiff', '.webp')
 
-def is_image_file(filepath: str) -> bool:
-    return filepath.lower().endswith(VALID_IMAGE_EXTENSIONS)
+def create_unique_dirs():
+    """Creates unique input/output directories based on UUID."""
+    unique_id = str(uuid.uuid4())
+    input_dir = os.path.join(UPLOAD_DIR, unique_id)
+    output_dir = os.path.join(PROCESSED_DIR, unique_id)
+    os.makedirs(input_dir, exist_ok=True)
+    os.makedirs(output_dir, exist_ok=True)
+    return input_dir, output_dir, unique_id
+
+def save_uploaded_file(uploaded_file: UploadFile, destination_path: str):
+    """Saves an uploaded file to the given destination."""
+    with open(destination_path, "wb") as buffer:
+        shutil.copyfileobj(uploaded_file.file, buffer)
+
+def transform_and_package_images(transformation_types: List[str], input_dir: str, output_dir: str, unique_id: str):
+    """Performs image transformations and packages the output as a tarball."""
+    transform_images(
+        transformation_types=transformation_types,
+        input_dir=input_dir,
+        output_dir=output_dir
+    )
+
+    output_tar_path = os.path.join(PROCESSED_DIR, f"{unique_id}_transformed_images.tar.gz")
+    with tarfile.open(output_tar_path, "w:gz") as tar:
+        tar.add(output_dir, arcname="transformed_images")
+
+    return output_tar_path
+
+@app.get("/transformations")
+async def get_transformations():
+    return TRANSFORMATION_ALGORITHMS
+
 
 @app.post("/process_images")
 async def process_images(
@@ -34,35 +65,21 @@ async def process_images(
     file: UploadFile = File(...)
 ):
     try:
-        # generate a unique id to avoid conflicts in filenames
-        unique_id = str(uuid.uuid4())
-        input_dir = os.path.join(UPLOAD_DIR, unique_id)
-        output_dir = os.path.join(PROCESSED_DIR, unique_id)
-        
-        os.makedirs(input_dir, exist_ok=True)
-        os.makedirs(output_dir, exist_ok=True)
+        input_dir, output_dir, unique_id = create_unique_dirs()
 
+        # save tarball
         input_tar_path = os.path.join(input_dir, file.filename)
-        with open(input_tar_path, "wb") as buffer:
-            shutil.copyfileobj(file.file, buffer)
+        save_uploaded_file(file, input_tar_path)
 
+        #extract
         with tarfile.open(input_tar_path, "r:gz") as tar:
-          tar.extractall(path=input_dir)
+            tar.extractall(path=input_dir)
 
-        transform_images(
-            transformation_types=transformation_types, 
-            input_dir=input_dir, 
-            output_dir=output_dir
-        )
+        # do image transformations and tarball up the result again
+        output_tar_path = transform_and_package_images(transformation_types, input_dir, output_dir, unique_id)
 
-        # Create the output tarball
-        output_tar_path = os.path.join(PROCESSED_DIR, f"{unique_id}_transformed_images.tar.gz")
-        with tarfile.open(output_tar_path, "w:gz") as tar:
-            tar.add(output_dir, arcname="transformed_images")
+        logger.info(f"created tarball at {output_tar_path} with size {os.path.getsize(output_tar_path)}, sending back to client as a FileResponse immediately.")
 
-        logger.info(f"Created tarball at {output_tar_path} with size {os.path.getsize(output_tar_path)}, sending back to client as a FileResponse immediately.")
-
-        # Return the transformed tarball
         return FileResponse(
             path=output_tar_path,
             filename="transformed_images.tar.gz",
@@ -70,8 +87,48 @@ async def process_images(
         )
 
     except Exception as e:
-        logger.error(f"error processing images: {str(e)}")
+        logger.error(f"Error processing images: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/process_single_image")
+async def process_single_image(
+    transformation_types: List[str],
+    file: UploadFile = File(...)
+):
+    try:
+        input_dir, output_dir, unique_id = create_unique_dirs()
+
+        # Save the uploaded image
+        input_image_path = os.path.join(input_dir, file.filename)
+        save_uploaded_file(file, input_image_path)
+
+        # Check if the file has a valid image extension
+        if not input_image_path.lower().endswith(VALID_IMAGE_EXTENSIONS):
+            raise HTTPException(status_code=400, detail="Invalid image file format.")
+
+        # Perform image transformations
+        transform_images(
+            transformation_types=transformation_types,
+            input_dir=input_dir,
+            output_dir=output_dir
+        )
+
+
+        output_image_path = find_images(output_dir)[0]
+        logger.info(f"Processing complete for single image: {output_image_path}, sending back to client.")
+
+        # Return the transformed image
+        return FileResponse(
+            path=output_image_path,
+            filename=output_image_path.name,
+            media_type="image/jpeg"
+        )
+
+    except Exception as e:
+        logger.error(f"Error processing single image: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 
 if __name__ == "__main__":
     import uvicorn
