@@ -34,6 +34,7 @@ docker compose up --build
 - **DESKTOP C++ QT5 GUI**:
   - Should pop up on the screen. Select an image and follow the on-screen prompts.
   - Command: `docker compose run -it qt_gui_wrapper`
+  ![GUI](./docs/assets/QT_GUI.png)
 - **Python Terminal UI**:
   - Automatically processes images placed in the specified input directory, applying the defined transformations and saving the results to the output directory.
   - Command:
