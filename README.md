@@ -10,7 +10,7 @@ This project is a takehome assignment for SureScan. The purpose of the app is to
 - **Clients**: Desktop, CLI, and web (via rest API) clients wrap the library and are built and run as Docker Compose services.
 
 ### UML
-<img src="path/to/your/image.svg" alt="Description of the image">
+<img src=./docs/assets/Architecture.svg" alt="Description of the image">
 
 ## Usage
 
