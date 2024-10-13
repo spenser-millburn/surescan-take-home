@@ -14,8 +14,8 @@ PYBIND11_MODULE(_core, m) {
         .def("rotate_left", &ImageProcessor::rotate_left, "Rotate image 90 degrees to the left.")
         .def("rotate_right", &ImageProcessor::rotate_right, "Rotate image 90 degrees to the right.")
         .def("grayscale", &ImageProcessor::grayscale, "Convert image to grayscale.")
-        .def("read_image", &ImageProcessor::read_image, "Set the image being processed by reading it into memory")
-        .def("write_image", &ImageProcessor::write_image, "Write the image to a file of specified format. ")
+        .def("read", &ImageProcessor::read, "Set the image being processed by reading it into memory")
+        .def("write", &ImageProcessor::write, "Write the image to a file of specified format. ")
         .def("get_image", &ImageProcessor::get_image, "Return the Eigen matrix of the image.")
         .def("apply_transformation", &ImageProcessor::apply_transformation, "apply a transformation from string name")
         .def("get_transformations", &ImageProcessor::get_transformations, "Return a list of possible image transformations. ");
