@@ -84,6 +84,11 @@ docker compose up --build
   - The transformed images appear in the `./output` directory on the host.
 - **Typescript React Web GUI**:
   - Browse to [http://localhost:3000](http://localhost:3000) and follow on-screen prompts. You may either upload a single image or a tarball of images.
+    <table align="center">
+      <tr>
+        <td><img src="./docs/assets/webgui.png"></td>
+      </tr>
+    </table>
 - **REST API**:
   - See RESTful API documentation at [http://localhost:8000/docs](http://localhost:8000/docs).
 
