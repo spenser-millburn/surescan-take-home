@@ -40,8 +40,7 @@ docker compose up --build
     ```shell
     docker compose run -it python_tui bash -c "python3 /app/python_wrappers/cli.py --input-dir ./images/ --transformation flip_x_axis --transformation grayscale --output-dir ./output"
     ```
-    ```
- Usage: cli.py [OPTIONS]                                                                                                                                   
+```Usage: cli.py [OPTIONS]                                                                                                                                  
                                                                                                                                                            
 ╭─ Options ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
 │ *  --transformation            TEXT  Transformation(s) to apply, options are ['flip_x_axis', 'flip_y_axis', 'grayscale', 'reset_image', 'rotate_left',  │
@@ -54,8 +53,7 @@ docker compose up --build
 │    --install-completion              Install completion for the current shell.                                                                          │
 │    --show-completion                 Show completion for the current shell, to copy it or customize the installation.                                   │
 │    --help                            Show this message and exit.                                                                                        │
-╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
-    ```
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯```
 
   - The transformed images appear in the `./output` directory on the host.
 - **Typescript React Web GUI**:
