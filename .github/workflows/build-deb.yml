@@ -14,25 +14,25 @@ jobs:
 
     steps:
       # Checkout the repository
-      - name: Checkout code
+      - name: git checkout code
         uses: actions/checkout@v3
 
       # Set up Docker Buildx (for multi-platform builds, if needed)
-      - name: Set up Docker Buildx
+      - name: Set up the docker buildx environment
         uses: docker/setup-buildx-action@v2
 
       # Build the Docker image
-      - name: Build Docker image
+      - name: Build the docker image
         run: docker build -t surescan_image .
 #
-      - name: Run Python unit tests in Docker
+      - name: Run python unit tests
         run: docker run --rm surescan_image bash -c "pip install pytest && pytest -v --log-cli-level=INFO /app/python_wrappers/unit_tests.py > /output/python_wrapper_test_result.txt;ls /output; cat /output/python_wrapper_test_result.txt"
 
       - name: Run C++ googletests
         run: docker run --rm -v ${{ github.workspace }}/output:/output surescan_image bash -c "export GTEST_OUTPUT='xml:/output/transformer_lib_test_results.xml';/app/cpp_image_transformers_library/transformer_library/build/unit_tests /app/images/sunflower.jpg;ls /output;"
 
       # upload test results as an artifact
-      - name: Upload Test Results
+      - name: upload test results for transformer library and python wrapper
         if: always()
         uses: actions/upload-artifact@v3
         with:
@@ -42,11 +42,11 @@ jobs:
             ./output/python_wrapper_test_result.txt
 
       # save the debs
-      - name: Build Debian Package
+      - name: capture debs to ci environment 
         run: docker run --rm -v ${{ github.workspace }}/output:/out surescan_image sh -c "cp /output/* /out"
 
       # upload debs as artifacts
-      - name: Upload Debian Package
+      - name: Upload debian package
         uses: actions/upload-artifact@v3
         with:
           name: debian-package
