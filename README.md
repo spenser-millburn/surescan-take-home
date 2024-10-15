@@ -27,7 +27,8 @@ This project is a takehome assignment for SureScan. The purpose of the app is to
 
 ## Usage
 
-### Quickstart - Launch ALL Clients
+### Quickstart
+- Launch ALL Clients
 - Ensure Docker Compose is installed.
 - The desktop client uses X Forwarding, so you may need to run `xhost +`.
 - Ensure that ports `8000` and `3000` are open and not blocked/binded to by other applications.
@@ -108,3 +109,6 @@ docker compose up --build
 
 ## Additional Information
 - Built with love by Spenser Millburn.
+
+## License
+This project is licensed under the MIT License. For more details, please refer to the LICENSE file in the root directory of the repository or visit the following link to view the full license text: https://opensource.org/licenses/MIT
